@@ -441,6 +441,26 @@
           </button>
         </div>
 
+        <!-- Multi-Load Management Bar (Up to 3 Parallel Loads) -->
+        <div id="multi-load-container" class="mb-2 p-1.5 bg-[#061426] rounded border border-[#183863]">
+          <div class="flex items-center justify-between gap-1 mb-1.5">
+            <div class="flex items-center gap-1.5 text-[10px] font-mono text-[#8FAECB]">
+              <span class="text-cyan-400 font-bold">⚡</span>
+              <span id="lbl-loads-title" class="font-bold uppercase tracking-wider">НАГРУЗКИ:</span>
+              <span id="badge-loads-count" class="text-[9px] px-1.5 py-0.5 rounded bg-[#0D2444] text-cyan-300 border border-[#235188] font-bold">1 / 3</span>
+            </div>
+            <button id="btn-add-load" class="quick-chip py-0.5 px-2 text-[10px] text-emerald-300 hover:text-white border-emerald-500/50 hover:border-emerald-400 flex items-center gap-1 font-bold transition-all shadow-[0_0_8px_rgba(46,204,113,0.2)]" onclick="addNewLoad()">
+              <span class="text-emerald-400 font-bold text-xs leading-none">+</span>
+              <span id="txt-add-load">Добавить нагрузку</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Load Tabs Container -->
+          <div id="loads-tab-bar" class="flex flex-wrap gap-1.5 font-mono text-xs">
+            <!-- Dynamically populated by renderLoadsTabBar() -->
+          </div>
+        </div>
+
         <!-- 1-Click Phase Selection Bar -->
         <div class="grid grid-cols-3 gap-1.5 mb-2.5 font-mono text-xs">
           <button id="btn-tab-phase-a" class="quick-chip py-1.5 font-bold border-amber-400/70 text-amber-400 bg-amber-950/40">ФАЗА A</button>
@@ -1254,6 +1274,12 @@
         drawerTitle: "Отклонения фазных напряжений и углов:",
         resetUnbal: "↺ 0% СБРОС",
         loadHdr: "3. Настройка нагрузки и гармоник",
+        loadsTitle: "НАГРУЗКИ:",
+        addLoad: "Добавить нагрузку",
+        loadName: "Нагрузка",
+        loadActive: "ВКЛ",
+        loadDisabled: "ВЫКЛ",
+        maxLoadsReached: "Максимум (3/3)",
         linkPhases: "Связь 3-х фаз",
         phaseA: "ФАЗА A",
         phaseB: "ФАЗА B",
@@ -1399,6 +1425,12 @@
         drawerTitle: "Phase Voltage & Angle Deviations:",
         resetUnbal: "↺ 0% RESET",
         loadHdr: "3. Load Tuning & Harmonics",
+        loadsTitle: "LOADS:",
+        addLoad: "Add Load",
+        loadName: "Load",
+        loadActive: "ON",
+        loadDisabled: "OFF",
+        maxLoadsReached: "Max (3/3)",
         linkPhases: "Link 3 Phases",
         phaseA: "PHASE A",
         phaseB: "PHASE B",
@@ -1530,7 +1562,24 @@
       simTime: 0.0,
       activeTab: 'tab-oscilloscope',
       activePhaseTab: 0,
+      activeLoadIdx: 0,
       linkPhases: true,
+
+      // Multi-Load Architecture (Up to 3 Parallel Loads)
+      loads: [
+        {
+          id: 1,
+          nameRu: 'Нагрузка 1',
+          nameEn: 'Load 1',
+          enabled: true,
+          linkPhases: true,
+          phases: [
+            { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
+            { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
+            { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 }
+          ]
+        }
+      ],
 
       // Grid Base Parameters & Thevenin Impedance
       grid: {
@@ -1543,7 +1592,7 @@
         devTheta: [0.0, 0.0, 0.0]
       },
 
-      // Per-Phase Loads (Fundamental + Harmonics)
+      // Equivalent Aggregate Per-Phase Load (calculated by superposition of active loads)
       phases: [
         { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
         { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
@@ -1757,6 +1806,27 @@
       }
     ];
 
+    function syncLoadsFromPreset(s) {
+      if (!s.loads || s.loads.length === 0) {
+        s.loads = [{
+          id: 1,
+          nameRu: 'Нагрузка 1',
+          nameEn: 'Load 1',
+          enabled: true,
+          linkPhases: s.linkPhases,
+          phases: JSON.parse(JSON.stringify(s.phases))
+        }];
+      } else {
+        s.loads[0].enabled = true;
+        s.loads[0].linkPhases = s.linkPhases;
+        s.loads[0].phases = JSON.parse(JSON.stringify(s.phases));
+        for (let i = 1; i < s.loads.length; i++) {
+          s.loads[i].enabled = false;
+        }
+      }
+      s.activeLoadIdx = 0;
+    }
+
     class Complex {
       constructor(re, im) { this.re = re; this.im = im; }
       add(c) { return new Complex(this.re + c.re, this.im + c.im); }
@@ -1784,6 +1854,9 @@
 
       const u = [0, 0, 0];
       const i = [0, 0, 0];
+      const harmOrders = [3, 5, 7, 9, 11];
+
+      const activeLoads = state.loads ? state.loads.filter(l => l.enabled) : [];
 
       for (let k = 0; k < 3; k++) {
         let uDev = state.grid.unbalanceEnabled ? (state.grid.devU[k] / 100.0) : 0.0;
@@ -1793,21 +1866,36 @@
 
         let eInst = Math.SQRT2 * eRmsK * Math.sin(omega * t + eThetaK);
 
-        const p = state.phases[k];
-        let phiRad = p.phi1 * degToRad;
-        let iInst = Math.SQRT2 * p.i1 * Math.sin(omega * t + eThetaK - phiRad);
-        let diInst_dt = Math.SQRT2 * p.i1 * omega * Math.cos(omega * t + eThetaK - phiRad);
+        let iInst = 0;
+        let diInst_dt = 0;
 
-        const harmOrders = [3, 5, 7, 9, 11];
-        const harmPercs = [p.h3, p.h5, p.h7, p.h9, p.h11];
-        for (let h = 0; h < harmOrders.length; h++) {
-          let ord = harmOrders[h];
-          let pct = harmPercs[h];
-          if (pct > 0) {
-            let ihPeak = Math.SQRT2 * (p.i1 * pct / 100.0);
-            let hAng = ord * (omega * t + eThetaK - phiRad);
-            iInst += ihPeak * Math.sin(hAng);
-            diInst_dt += ihPeak * (ord * omega) * Math.cos(hAng);
+        if (activeLoads.length > 0) {
+          for (let m = 0; m < activeLoads.length; m++) {
+            const p = activeLoads[m].phases[k];
+            if (p.i1 > 0) {
+              let phiRad = p.phi1 * degToRad;
+              iInst += Math.SQRT2 * p.i1 * Math.sin(omega * t + eThetaK - phiRad);
+              diInst_dt += Math.SQRT2 * p.i1 * omega * Math.cos(omega * t + eThetaK - phiRad);
+
+              const harmPercs = [p.h3, p.h5, p.h7, p.h9, p.h11];
+              for (let h = 0; h < harmOrders.length; h++) {
+                let ord = harmOrders[h];
+                let pct = harmPercs[h];
+                if (pct > 0) {
+                  let ihPeak = Math.SQRT2 * (p.i1 * pct / 100.0);
+                  let hAng = ord * (omega * t + eThetaK - phiRad);
+                  iInst += ihPeak * Math.sin(hAng);
+                  diInst_dt += ihPeak * (ord * omega) * Math.cos(hAng);
+                }
+              }
+            }
+          }
+        } else {
+          const p = state.phases[k];
+          if (p && p.i1 > 0) {
+            let phiRad = p.phi1 * degToRad;
+            iInst = Math.SQRT2 * p.i1 * Math.sin(omega * t + eThetaK - phiRad);
+            diInst_dt = Math.SQRT2 * p.i1 * omega * Math.cos(omega * t + eThetaK - phiRad);
           }
         }
 
@@ -1829,6 +1917,69 @@
       const xr = state.grid.xrRatio;
       const rGrid = zMag / Math.sqrt(1 + xr * xr);
       const lGrid = (rGrid * xr) / omega;
+
+      // 1. Calculate equivalent aggregate load across all active loads into state.phases
+      const activeLoads = state.loads ? state.loads.filter(l => l.enabled) : [];
+
+      for (let k = 0; k < 3; k++) {
+        let thetaDev = state.grid.unbalanceEnabled ? (state.grid.devTheta[k] * degToRad) : 0.0;
+        let eAngle = thetaBase[k] + thetaDev;
+
+        if (activeLoads.length > 0) {
+          let re1 = 0, im1 = 0;
+          for (let m = 0; m < activeLoads.length; m++) {
+            const p = activeLoads[m].phases[k];
+            const phiRad = p.phi1 * degToRad;
+            const iAng = eAngle - phiRad;
+            re1 += p.i1 * Math.cos(iAng);
+            im1 += p.i1 * Math.sin(iAng);
+          }
+          const i1Total = Math.hypot(re1, im1);
+          const iAngTotal = Math.atan2(im1, re1);
+          let phiRadTotal = eAngle - iAngTotal;
+          while (phiRadTotal > Math.PI) phiRadTotal -= 2 * Math.PI;
+          while (phiRadTotal <= -Math.PI) phiRadTotal += 2 * Math.PI;
+          const phi1DegTotal = phiRadTotal * (180.0 / Math.PI);
+
+          const harmPercsTotal = {};
+          [3, 5, 7, 9, 11].forEach(ord => {
+            let reh = 0, imh = 0;
+            for (let m = 0; m < activeLoads.length; m++) {
+              const p = activeLoads[m].phases[k];
+              const pct = p['h' + ord] || 0;
+              if (pct > 0 && p.i1 > 0) {
+                const ih = p.i1 * (pct / 100.0);
+                const phiRad = p.phi1 * degToRad;
+                const hAng = ord * (eAngle - phiRad);
+                reh += ih * Math.cos(hAng);
+                imh += ih * Math.sin(hAng);
+              }
+            }
+            const ihTotal = Math.hypot(reh, imh);
+            harmPercsTotal['h' + ord] = i1Total > 1e-4 ? (ihTotal / i1Total) * 100.0 : 0.0;
+          });
+
+          state.phases[k] = {
+            i1: i1Total,
+            phi1: phi1DegTotal,
+            h3: harmPercsTotal.h3,
+            h5: harmPercsTotal.h5,
+            h7: harmPercsTotal.h7,
+            h9: harmPercsTotal.h9,
+            h11: harmPercsTotal.h11
+          };
+        } else {
+          state.phases[k] = {
+            i1: 0.0,
+            phi1: 0.0,
+            h3: 0.0,
+            h5: 0.0,
+            h7: 0.0,
+            h9: 0.0,
+            h11: 0.0
+          };
+        }
+      }
 
       let pTot = 0, qTot = 0, sumDsq = 0;
       const uPhasors = [], iPhasors = [];
@@ -3573,6 +3724,12 @@
       document.getElementById('txt-footer-math').textContent = dict.footerEngine;
       document.getElementById('lbl-footer-time').textContent = dict.timeLbl;
 
+      const lblLoadsTitle = document.getElementById('lbl-loads-title');
+      if (lblLoadsTitle) lblLoadsTitle.textContent = dict.loadsTitle;
+      const txtAddLoad = document.getElementById('txt-add-load');
+      if (txtAddLoad) txtAddLoad.textContent = dict.addLoad;
+      renderLoadsTabBar();
+
       state.needsTableUpdate = true;
       updateLoadTuningTheme();
       updateDashboardUI();
@@ -3597,7 +3754,8 @@
     }
 
     function syncCurrentChipsHighlight(iVal) {
-      if (iVal === undefined) iVal = state.phases[state.activePhaseTab].i1;
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases };
+      if (iVal === undefined) iVal = curLoad.phases[state.activePhaseTab].i1;
       const iChips = document.querySelectorAll('#i-quick-chips button');
       iChips.forEach(chip => {
         const val = parseFloat(chip.dataset.current !== undefined ? chip.dataset.current : chip.textContent);
@@ -3606,7 +3764,8 @@
     }
 
     function syncPhiChipsHighlight(deg) {
-      if (deg === undefined) deg = state.phases[state.activePhaseTab].phi1;
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases };
+      if (deg === undefined) deg = curLoad.phases[state.activePhaseTab].phi1;
       const phiChips = document.querySelectorAll('#phi-quick-chips button');
       phiChips.forEach(chip => {
         let targetVal = 0;
@@ -3625,7 +3784,8 @@
     }
 
     function syncHarmonicsChipsHighlight() {
-      const p = state.phases[state.activePhaseTab];
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases };
+      const p = curLoad.phases[state.activePhaseTab];
       const btnClean = document.getElementById('btn-harm-clean');
       const btnSmps = document.getElementById('btn-harm-smps');
       const btnVfd = document.getElementById('btn-harm-vfd');
@@ -3663,23 +3823,26 @@
     };
 
     window.setCurrent = function(iVal, btn) {
-      if (state.linkPhases) {
-        state.phases[0].i1 = iVal; state.phases[1].i1 = iVal; state.phases[2].i1 = iVal;
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+      if (curLoad.linkPhases) {
+        curLoad.phases[0].i1 = iVal; curLoad.phases[1].i1 = iVal; curLoad.phases[2].i1 = iVal;
       } else {
-        state.phases[state.activePhaseTab].i1 = iVal;
+        curLoad.phases[state.activePhaseTab].i1 = iVal;
       }
       document.getElementById('slider-i1').value = iVal;
       document.getElementById('val-i1').textContent = `${iVal.toFixed(1)} A`;
       syncCurrentChipsHighlight(iVal);
       clearActivePreset();
       recomputePowerAnalytics();
+      renderLoadsTabBar();
     };
 
     window.setPhaseAngle = function(deg, btn) {
-      if (state.linkPhases) {
-        state.phases[0].phi1 = deg; state.phases[1].phi1 = deg; state.phases[2].phi1 = deg;
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+      if (curLoad.linkPhases) {
+        curLoad.phases[0].phi1 = deg; curLoad.phases[1].phi1 = deg; curLoad.phases[2].phi1 = deg;
       } else {
-        state.phases[state.activePhaseTab].phi1 = deg;
+        curLoad.phases[state.activePhaseTab].phi1 = deg;
       }
       document.getElementById('slider-phi1').value = deg;
       document.getElementById('val-phi1').textContent = `${deg.toFixed(1)}°`;
@@ -3687,6 +3850,7 @@
       syncPhiChipsHighlight(deg);
       clearActivePreset();
       recomputePowerAnalytics();
+      renderLoadsTabBar();
     };
 
     window.setHarmonicsPreset = function(preset, btn) {
@@ -3694,7 +3858,8 @@
         p.h3 = h3; p.h5 = h5; p.h7 = h7; p.h9 = h9; p.h11 = h11 || 0;
       };
 
-      const targets = state.linkPhases ? state.phases : [state.phases[state.activePhaseTab]];
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+      const targets = curLoad.linkPhases ? curLoad.phases : [curLoad.phases[state.activePhaseTab]];
       targets.forEach(p => {
         if (preset === 'clean') setH(p, 0, 0, 0, 0, 0);
         else if (preset === 'smps') setH(p, 60, 20, 10, 5, 2);
@@ -3705,6 +3870,184 @@
       syncHarmonicsChipsHighlight();
       clearActivePreset();
       recomputePowerAnalytics();
+      renderLoadsTabBar();
+    };
+
+    // --- Multi-Load Management Functions (Up to 3 Parallel Loads) ---
+    window.selectActiveLoad = function(idx) {
+      if (!state.loads || !state.loads[idx]) return;
+      state.activeLoadIdx = idx;
+      renderLoadsTabBar();
+      syncPhaseSlidersFromState();
+      updateLoadTuningTheme();
+    };
+
+    window.addNewLoad = function() {
+      if (!state.loads) state.loads = [];
+      if (state.loads.length >= 3) return;
+      const usedIds = state.loads.map(l => l.id);
+      let newId = 1;
+      for (let cand = 1; cand <= 3; cand++) {
+        if (!usedIds.includes(cand)) {
+          newId = cand;
+          break;
+        }
+      }
+      const defaultI = newId === 2 ? 10.0 : 5.0;
+      const defaultPhi = newId === 2 ? 30.0 : -45.0;
+      const newLoad = {
+        id: newId,
+        nameRu: `Нагрузка ${newId}`,
+        nameEn: `Load ${newId}`,
+        enabled: true,
+        linkPhases: true,
+        phases: [
+          { i1: defaultI, phi1: defaultPhi, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
+          { i1: defaultI, phi1: defaultPhi, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
+          { i1: defaultI, phi1: defaultPhi, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 }
+        ]
+      };
+      state.loads.push(newLoad);
+      state.activeLoadIdx = state.loads.length - 1;
+      state.needsTableUpdate = true;
+      state.needsUIUpdate = true;
+      renderLoadsTabBar();
+      syncPhaseSlidersFromState();
+      updateLoadTuningTheme();
+      recomputePowerAnalytics();
+      updateDashboardUI();
+    };
+
+    window.removeLoad = function(idx) {
+      if (idx <= 0 || !state.loads || idx >= state.loads.length) return; // Load 1 is baseline
+      state.loads.splice(idx, 1);
+      if (state.activeLoadIdx >= state.loads.length) {
+        state.activeLoadIdx = state.loads.length - 1;
+      }
+      state.needsTableUpdate = true;
+      state.needsUIUpdate = true;
+      renderLoadsTabBar();
+      syncPhaseSlidersFromState();
+      updateLoadTuningTheme();
+      recomputePowerAnalytics();
+      updateDashboardUI();
+    };
+
+    window.toggleLoadEnabled = function(idx) {
+      if (!state.loads || !state.loads[idx]) return;
+      state.loads[idx].enabled = !state.loads[idx].enabled;
+      state.needsTableUpdate = true;
+      state.needsUIUpdate = true;
+      renderLoadsTabBar();
+      recomputePowerAnalytics();
+      updateDashboardUI();
+    };
+
+    window.renderLoadsTabBar = function() {
+      const bar = document.getElementById('loads-tab-bar');
+      const countEl = document.getElementById('badge-loads-count');
+      const btnAdd = document.getElementById('btn-add-load');
+      const isRu = state.lang === 'ru';
+      if (!bar) return;
+
+      if (!state.loads || state.loads.length === 0) {
+        state.loads = [{
+          id: 1,
+          nameRu: 'Нагрузка 1',
+          nameEn: 'Load 1',
+          enabled: true,
+          linkPhases: true,
+          phases: JSON.parse(JSON.stringify(state.phases))
+        }];
+        state.activeLoadIdx = 0;
+      }
+
+      const totalLoads = state.loads.length;
+      if (countEl) countEl.textContent = `${totalLoads} / 3`;
+
+      if (btnAdd) {
+        const canAdd = totalLoads < 3;
+        btnAdd.disabled = !canAdd;
+        btnAdd.classList.toggle('opacity-35', !canAdd);
+        btnAdd.classList.toggle('cursor-not-allowed', !canAdd);
+        btnAdd.classList.toggle('pointer-events-none', !canAdd);
+        const txtAdd = document.getElementById('txt-add-load');
+        if (txtAdd) {
+          txtAdd.textContent = canAdd 
+            ? (isRu ? 'Добавить нагрузку' : 'Add Load') 
+            : (isRu ? 'Максимум (3/3)' : 'Max (3/3)');
+        }
+      }
+
+      const themes = [
+        {
+          activeBorder: 'border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.3)] bg-[#0A223E]',
+          activeText: 'text-cyan-300',
+          ledOn: 'bg-cyan-400 shadow-[0_0_6px_#00f0ff]'
+        },
+        {
+          activeBorder: 'border-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.3)] bg-[#261E0A]',
+          activeText: 'text-amber-300',
+          ledOn: 'bg-amber-400 shadow-[0_0_6px_#f59e0b]'
+        },
+        {
+          activeBorder: 'border-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.3)] bg-[#230C36]',
+          activeText: 'text-purple-300',
+          ledOn: 'bg-purple-400 shadow-[0_0_6px_#a855f7]'
+        }
+      ];
+
+      let html = '';
+      state.loads.forEach((ld, idx) => {
+        const isSelected = (idx === state.activeLoadIdx);
+        const th = themes[idx % themes.length];
+        const cardBorder = isSelected 
+          ? th.activeBorder 
+          : 'border-[#183863] bg-[#07172A] hover:border-[#235188] text-[#8FAECB]';
+        const cardOpacity = ld.enabled ? '' : 'opacity-60 bg-[#040C16]';
+        const name = isRu ? `Нагрузка ${ld.id}` : `Load ${ld.id}`;
+        const pA = ld.phases[0];
+
+        let summary = '';
+        if (ld.linkPhases) {
+          const nature = Math.abs(pA.phi1) <= 2 ? 'R' : (pA.phi1 > 2 ? 'L' : 'C');
+          const cos = Math.cos(pA.phi1 * Math.PI / 180).toFixed(2);
+          summary = `${pA.i1.toFixed(1)}A • ${nature} ${cos}`;
+        } else {
+          summary = `A:${ld.phases[0].i1.toFixed(0)} B:${ld.phases[1].i1.toFixed(0)} C:${ld.phases[2].i1.toFixed(0)}A`;
+        }
+
+        const ledClass = ld.enabled ? th.ledOn : 'bg-gray-600';
+        const statusBtnClass = ld.enabled 
+          ? 'bg-emerald-950/80 border-emerald-500/70 text-emerald-300 hover:bg-emerald-900' 
+          : 'bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-800';
+        const statusTxt = ld.enabled ? (isRu ? 'ВКЛ' : 'ON') : (isRu ? 'ВЫКЛ' : 'OFF');
+
+        html += `
+          <div class="load-card flex-1 min-w-[105px] p-1.5 rounded cursor-pointer transition-all border ${cardBorder} ${cardOpacity}" onclick="selectActiveLoad(${idx})" data-load-index="${idx}">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="w-2 h-2 rounded-full shrink-0 transition-all ${ledClass}"></span>
+                <span class="font-bold text-[11px] truncate ${isSelected ? th.activeText : 'text-white'}">${name}</span>
+              </div>
+              <div class="flex items-center gap-1 shrink-0">
+                <button type="button" class="btn-toggle-load-status text-[9px] px-1 py-0.2 rounded border font-bold transition-colors ${statusBtnClass}" onclick="event.stopPropagation(); toggleLoadEnabled(${idx})">
+                  ${statusTxt}
+                </button>
+                ${idx > 0 ? `
+                <button type="button" class="btn-remove-load text-[10px] text-rose-400 hover:text-rose-200 hover:bg-rose-950/60 px-1 py-0.2 rounded transition-colors" onclick="event.stopPropagation(); removeLoad(${idx})">
+                  ✕
+                </button>` : ''}
+              </div>
+            </div>
+            <div class="text-[10px] font-mono flex items-center justify-between text-[#8FAECB]">
+              <span class="truncate">${summary}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      bar.innerHTML = html;
     };
 
     window.toggleChannel = function(prop, btn) {
@@ -3962,6 +4305,10 @@
       },
 
       // Section 3: Load Tuning & Harmonics
+      'btn-add-load': {
+        ru: 'Добавить в трехфазную сеть дополнительную параллельную нагрузку (максимум 3)',
+        en: 'Add an additional parallel load to the 3-phase grid (maximum 3)'
+      },
       'btn-toggle-link': {
         ru: 'Включить или выключить синхронную связь параметров нагрузки всех 3 фаз',
         en: 'Toggle synchronous load parameter linking across all 3 phases'
@@ -4891,7 +5238,9 @@
     }
 
     function syncPhaseSlidersFromState() {
-      const p = state.phases[state.activePhaseTab];
+      const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+      state.linkPhases = curLoad.linkPhases;
+      const p = curLoad.phases[state.activePhaseTab];
       document.getElementById('slider-i1').value = p.i1;
       document.getElementById('val-i1').textContent = `${p.i1.toFixed(1)} A`;
 
@@ -4910,6 +5259,7 @@
       syncPhiChipsHighlight(p.phi1);
       syncHarmonicsChipsHighlight();
       updateLoadTuningTheme();
+      updateToggleIndicators();
     }
 
     function syncGridSlidersFromState() {
@@ -5008,8 +5358,10 @@
           btn.classList.add('active');
           let idx = parseInt(btn.dataset.preset);
           PRESETS[idx].apply(state);
+          syncLoadsFromPreset(state);
 
           updateToggleIndicators();
+          renderLoadsTabBar();
 
           syncPhaseSlidersFromState();
           syncGridSlidersFromState();
@@ -5084,13 +5436,18 @@
       // Link Phases Toggle
       const btnLink = document.getElementById('btn-toggle-link');
       btnLink.addEventListener('click', () => {
-        state.linkPhases = !state.linkPhases;
+        const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+        curLoad.linkPhases = !curLoad.linkPhases;
+        state.linkPhases = curLoad.linkPhases;
         updateToggleIndicators();
-        if (state.linkPhases) {
-          state.phases[1] = JSON.parse(JSON.stringify(state.phases[0]));
-          state.phases[2] = JSON.parse(JSON.stringify(state.phases[0]));
-          recomputePowerAnalytics();
+        if (curLoad.linkPhases) {
+          curLoad.phases[1] = JSON.parse(JSON.stringify(curLoad.phases[0]));
+          curLoad.phases[2] = JSON.parse(JSON.stringify(curLoad.phases[0]));
         }
+        syncPhaseSlidersFromState();
+        updateLoadTuningTheme();
+        recomputePowerAnalytics();
+        renderLoadsTabBar();
         state.needsTableUpdate = true;
       });
 
@@ -5100,7 +5457,8 @@
       const btnPC = document.getElementById('btn-tab-phase-c');
 
       function setEditingPhase(idx) {
-        if (state.linkPhases) return;
+        const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+        if (curLoad.linkPhases) return;
         state.activePhaseTab = idx;
         syncPhaseSlidersFromState();
         updateLoadTuningTheme();
@@ -5113,29 +5471,33 @@
       // Current & Angle sliders
       document.getElementById('slider-i1').addEventListener('input', (e) => {
         let val = parseFloat(e.target.value);
-        if (state.linkPhases) {
-          state.phases[0].i1 = val; state.phases[1].i1 = val; state.phases[2].i1 = val;
+        const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+        if (curLoad.linkPhases) {
+          curLoad.phases[0].i1 = val; curLoad.phases[1].i1 = val; curLoad.phases[2].i1 = val;
         } else {
-          state.phases[state.activePhaseTab].i1 = val;
+          curLoad.phases[state.activePhaseTab].i1 = val;
         }
         document.getElementById('val-i1').textContent = `${val.toFixed(1)} A`;
         syncCurrentChipsHighlight(val);
         clearActivePreset();
         recomputePowerAnalytics();
+        renderLoadsTabBar();
       });
 
       document.getElementById('slider-phi1').addEventListener('input', (e) => {
         let val = parseFloat(e.target.value);
-        if (state.linkPhases) {
-          state.phases[0].phi1 = val; state.phases[1].phi1 = val; state.phases[2].phi1 = val;
+        const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+        if (curLoad.linkPhases) {
+          curLoad.phases[0].phi1 = val; curLoad.phases[1].phi1 = val; curLoad.phases[2].phi1 = val;
         } else {
-          state.phases[state.activePhaseTab].phi1 = val;
+          curLoad.phases[state.activePhaseTab].phi1 = val;
         }
         document.getElementById('val-phi1').textContent = `${val.toFixed(1)}°`;
         updateNatureBadge(val);
         syncPhiChipsHighlight(val);
         clearActivePreset();
         recomputePowerAnalytics();
+        renderLoadsTabBar();
       });
 
       // Harmonics Sliders
@@ -5144,15 +5506,17 @@
         if (slider) {
           slider.addEventListener('input', (e) => {
             let val = parseFloat(e.target.value);
-            if (state.linkPhases) {
-              state.phases[0][k] = val; state.phases[1][k] = val; state.phases[2][k] = val;
+            const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
+            if (curLoad.linkPhases) {
+              curLoad.phases[0][k] = val; curLoad.phases[1][k] = val; curLoad.phases[2][k] = val;
             } else {
-              state.phases[state.activePhaseTab][k] = val;
+              curLoad.phases[state.activePhaseTab][k] = val;
             }
             document.getElementById(`val-${k}`).textContent = `${val}%`;
             syncHarmonicsChipsHighlight();
             clearActivePreset();
             recomputePowerAnalytics();
+            renderLoadsTabBar();
           });
         }
       });
@@ -5581,6 +5945,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       setupEventListeners();
+      renderLoadsTabBar();
       updateToggleIndicators();
       setupTooltips();
       recomputePowerAnalytics();
