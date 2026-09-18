@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>3-ФАЗНАЯ СЕТЬ: РАСЧЕТ И АНАЛИЗ МОЩНОСТИ | 3-PHASE GRID ANALYZER</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js WebGL 3D Rendering Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -78,6 +80,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.35rem;
       padding: 0.35rem 0.55rem;
       border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
@@ -202,8 +205,9 @@
           </button>
 
           <!-- Simulation Reset -->
-          <button id="btn-sim-reset" title="Сброс таймера и счетчиков" class="px-2.5 py-1.5 rounded-md bg-[#0D2444] hover:bg-[#163866] border border-[#235188] text-[#8FAECB] hover:text-white text-xs transition">
-            ↺ <span class="hidden sm:inline" id="txt-reset">СБРОС</span>
+          <button id="btn-sim-reset" class="px-2.5 py-1.5 rounded-md bg-[#0D2444] hover:bg-[#163866] border border-[#235188] text-[#8FAECB] hover:text-white text-xs flex items-center gap-1.5 transition">
+            <span>↺</span>
+            <span class="hidden sm:inline" id="txt-reset">СБРОС</span>
           </button>
 
           <!-- Energy Meters Header Counter (Wp, Wq, Ws) -->
@@ -362,9 +366,9 @@
             <div class="flex justify-between items-center mb-1">
               <span id="lbl-z-grid" class="text-[#8FAECB]">Импеданс сети Z_сети (PCC):</span>
               <div class="flex items-center gap-1" id="z-quick-chips">
-                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-z="0.00" onclick="setZGrid(0.00, this)" title="Идеальная бесконечная сеть">0.0Ω</button>
-                <button class="quick-chip py-0.5 px-1.5 text-[10px] active" data-z="0.18" onclick="setZGrid(0.18, this)" title="Типовой фидер ТП 0.4 кВ">0.18Ω</button>
-                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-z="0.50" onclick="setZGrid(0.50, this)" title="Слабая сельская линия">0.50Ω</button>
+                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-z="0.00" onclick="setZGrid(0.00, this)">0.0Ω</button>
+                <button class="quick-chip py-0.5 px-1.5 text-[10px] active" data-z="0.18" onclick="setZGrid(0.18, this)">0.18Ω</button>
+                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-z="0.50" onclick="setZGrid(0.50, this)">0.50Ω</button>
                 <span id="val-z-grid" class="text-amber-300 font-bold ml-1 min-w-[48px] text-right">0.18 Ω</span>
               </div>
             </div>
@@ -488,9 +492,9 @@
                 Гармоники (%):
               </span>
               <div class="flex items-center gap-1" id="harm-quick-chips">
-                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-harm="clean" onclick="setHarmonicsPreset('clean', this)" title="Чистый синус" id="btn-harm-clean">Чисто</button>
-                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-harm="smps" onclick="setHarmonicsPreset('smps', this)" title="3-я 60%, 5-я 20%" id="btn-harm-smps">ИБП</button>
-                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-harm="vfd" onclick="setHarmonicsPreset('vfd', this)" title="5-я 25%, 7-я 15%" id="btn-harm-vfd">ЧРП</button>
+                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-harm="clean" onclick="setHarmonicsPreset('clean', this)" id="btn-harm-clean">Чисто</button>
+                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-harm="smps" onclick="setHarmonicsPreset('smps', this)" id="btn-harm-smps">ИБП</button>
+                <button class="quick-chip py-0.5 px-1.5 text-[10px]" data-harm="vfd" onclick="setHarmonicsPreset('vfd', this)" id="btn-harm-vfd">ЧРП</button>
               </div>
             </div>
 
@@ -675,11 +679,11 @@
             <!-- Vertical Zoom HUD Controls (Top-Right) -->
             <div class="absolute top-2 right-2 bg-[#0A1B32]/90 backdrop-blur border border-[#183863] p-1 rounded-lg text-[10px] font-mono text-[#8FAECB] flex items-center gap-1 shadow-md z-10">
               <span class="text-[9px] text-[#8FAECB] px-1 font-bold" id="lbl-scope-vzoom">Y-ЗУМ:</span>
-              <button id="btn-scope-zoom-out" class="quick-chip py-0.5 px-2 font-bold" title="Уменьшить масштаб по вертикали">−</button>
+              <button id="btn-scope-zoom-out" class="quick-chip py-0.5 px-2 font-bold">−</button>
               <span id="val-scope-zoom" class="px-2 py-0.5 rounded bg-[#060F1D] border border-[#183863] text-cyan-300 font-bold min-w-[46px] text-center text-[10px]">100%</span>
-              <button id="btn-scope-zoom-in" class="quick-chip py-0.5 px-2 font-bold" title="Увеличить масштаб по вертикали">+</button>
-              <button id="btn-scope-reset-zoom" class="quick-chip py-0.5 px-2 text-[#8FAECB] hover:text-cyan-300" title="Сбросить вертикальный масштаб">
-                ↺ <span id="txt-scope-reset-zoom">СБРОС</span>
+              <button id="btn-scope-zoom-in" class="quick-chip py-0.5 px-2 font-bold">+</button>
+              <button id="btn-scope-reset-zoom" class="quick-chip py-0.5 px-2 text-[#8FAECB] hover:text-cyan-300 flex items-center gap-1.5">
+                <span>↺</span> <span id="txt-scope-reset-zoom">СБРОС</span>
               </button>
             </div>
 
@@ -711,9 +715,9 @@
               <div class="flex items-center gap-1">
                 <span class="text-[#8FAECB] text-[11px]" id="txt-measure-phase">Угол:</span>
                 <div class="flex bg-[#0A1B32] rounded border border-[#235188] p-0.5 text-[10px]">
-                  <button class="phasor-phase-chip px-2 py-0.5 rounded text-amber-400 font-bold bg-[#0D2444]" data-phase="0">Фаза A</button>
-                  <button class="phasor-phase-chip px-2 py-0.5 rounded text-[#8FAECB] hover:text-white" data-phase="1">Фаза B</button>
-                  <button class="phasor-phase-chip px-2 py-0.5 rounded text-[#8FAECB] hover:text-white" data-phase="2">Фаза C</button>
+                  <button class="phasor-phase-chip px-2 py-0.5 rounded text-amber-400 font-bold bg-[#0D2444]" data-phase="0" id="chip-phasor-phase-a">Фаза A</button>
+                  <button class="phasor-phase-chip px-2 py-0.5 rounded text-[#8FAECB] hover:text-white" data-phase="1" id="chip-phasor-phase-b">Фаза B</button>
+                  <button class="phasor-phase-chip px-2 py-0.5 rounded text-[#8FAECB] hover:text-white" data-phase="2" id="chip-phasor-phase-c">Фаза C</button>
                 </div>
               </div>
             </div>
@@ -824,8 +828,8 @@
                 100%
               </span>
               <button id="btn-zoom-in" class="quick-chip py-0.5 px-2 font-bold">+</button>
-              <button id="btn-reset-3d-cam" class="quick-chip py-0.5 px-2 text-[#8FAECB] hover:text-cyan-300">
-                ↺ <span id="txt-reset-cam">СБРОС</span>
+              <button id="btn-reset-3d-cam" class="quick-chip py-0.5 px-2 text-[#8FAECB] hover:text-cyan-300 flex items-center gap-1.5">
+                <span>↺</span> <span id="txt-reset-cam">СБРОС</span>
               </button>
             </div>
 
@@ -870,8 +874,9 @@
           </div>
 
           <!-- 3D Canvas Container -->
-          <div class="flex-1 min-h-[300px] h-[340px] xl:h-auto xl:min-h-0 relative w-full bg-[#030A14] rounded-lg border border-[#235188] overflow-hidden">
+          <div class="flex-1 min-h-[300px] h-[340px] xl:h-auto xl:min-h-0 relative w-full bg-[#030A14] rounded-lg border border-[#235188] overflow-hidden" id="container-tetrahedron">
             <canvas id="canvas-tetrahedron" class="absolute inset-0 w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+            <canvas id="canvas-tetrahedron-labels" class="absolute inset-0 w-full h-full block pointer-events-none"></canvas>
 
             <div class="absolute top-2 right-2 bg-[#0A1B32]/90 backdrop-blur border border-[#183863] px-2 py-1 rounded text-[10px] font-mono text-[#8FAECB] pointer-events-none flex items-center gap-1 shadow z-10">
               <span class="text-cyan-400">💡</span>
@@ -1006,7 +1011,7 @@
             <div class="bg-[#081628] p-2.5 rounded-lg border border-[#235188] flex flex-col justify-between">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-cyan-300 uppercase tracking-wider" id="txt-diag-energy-hdr">СЧЕТЧИК ЭНЕРГИИ</span>
-                <button id="btn-reset-energy" class="quick-chip py-0.5 px-1.5 text-[9px]"><span id="btn-reset-energy-txt">СБРОС</span></button>
+                <button id="btn-reset-energy" class="quick-chip py-0.5 px-1.5 text-[9px] flex items-center gap-1.5"><span>↺</span> <span id="btn-reset-energy-txt">СБРОС</span></button>
               </div>
               <div class="space-y-0.5 text-xs">
                 <div class="flex justify-between">
@@ -1058,7 +1063,7 @@
                   </div>
                   <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-1.5">
-                      <span class="inline-block w-4 h-0.5 bg-[#2ECC71]"></span>
+                      <span class="inline-block w-4 h-0 border-t-2 border-dashed border-[#2ECC71]"></span>
                       <span id="txt-topo-legend-phase">U_фаз.ном (лучи):</span>
                     </div>
                     <strong id="val-topo-nom-phase" class="text-white font-bold">230 V</strong>
@@ -1077,11 +1082,11 @@
 
                 <!-- Zoom & Pan Controls (Top-Right) -->
                 <div class="absolute top-2 right-2 bg-[#0A1B32]/90 backdrop-blur border border-[#183863] p-1 rounded-lg text-[10px] font-mono text-[#8FAECB] flex items-center gap-1 shadow-md z-10">
-                  <button id="btn-topo-zoom-out" class="quick-chip py-0.5 px-2 font-bold" title="Уменьшить масштаб">−</button>
+                  <button id="btn-topo-zoom-out" class="quick-chip py-0.5 px-2 font-bold">−</button>
                   <span id="val-topo-zoom" class="px-2 py-0.5 rounded bg-[#060F1D] border border-[#183863] text-cyan-300 font-bold min-w-[46px] text-center text-[10px]">100%</span>
-                  <button id="btn-topo-zoom-in" class="quick-chip py-0.5 px-2 font-bold" title="Увеличить масштаб">+</button>
-                  <button id="btn-topo-reset-cam" class="quick-chip py-0.5 px-2 text-[#8FAECB] hover:text-cyan-300">
-                    ↺ <span id="txt-topo-reset-cam">СБРОС</span>
+                  <button id="btn-topo-zoom-in" class="quick-chip py-0.5 px-2 font-bold">+</button>
+                  <button id="btn-topo-reset-cam" class="quick-chip py-0.5 px-2 text-[#8FAECB] hover:text-cyan-300 flex items-center gap-1.5">
+                    <span>↺</span> <span id="txt-topo-reset-cam">СБРОС</span>
                   </button>
                 </div>
 
@@ -2212,6 +2217,206 @@
       ctx.restore();
     }
 
+    // =========================================================================
+    // Modern WebGL 3D Rendering Engine for Power Tetrahedron (IEEE 1459)
+    // =========================================================================
+    let tetraGL = null;
+    let tetraGLInitAttempted = false;
+
+    function initTetrahedronWebGL(canvas) {
+      if (tetraGLInitAttempted) return tetraGL !== null;
+      tetraGLInitAttempted = true;
+
+      if (typeof THREE === 'undefined') {
+        console.warn('Three.js is not loaded, using high-performance 2D projection fallback');
+        return false;
+      }
+
+      try {
+        const renderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        renderer.setClearColor(0x030A14, 1.0);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
+
+        // Lighting: Ambient + Cyan Key Light + Warm Fill Light
+        const ambLight = new THREE.AmbientLight(0xffffff, 0.70);
+        scene.add(ambLight);
+
+        const keyLight = new THREE.DirectionalLight(0x00F0FF, 0.85);
+        keyLight.position.set(20, 30, 25);
+        scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0xffeedd, 0.45);
+        fillLight.position.set(-20, -15, -20);
+        scene.add(fillLight);
+
+        const rootGroup = new THREE.Group();
+        scene.add(rootGroup);
+
+        // Volumetric 3D Cylinder Geometry for glowing vectors (unit height, base at 0)
+        const unitCylGeom = new THREE.CylinderGeometry(0.10, 0.10, 1, 16, 1);
+        unitCylGeom.translate(0, 0.5, 0);
+
+        function createVolumetricEdge(color, emissiveHex = 0x000000) {
+          const mat = new THREE.MeshStandardMaterial({
+            color: color,
+            emissive: emissiveHex,
+            roughness: 0.25,
+            metalness: 0.30
+          });
+          const mesh = new THREE.Mesh(unitCylGeom, mat);
+          rootGroup.add(mesh);
+          return mesh;
+        }
+
+        const edgeP = createVolumetricEdge(0x2ECC71, 0x0c3e1a); // Vector P
+        const edgeQ = createVolumetricEdge(0xF39C12, 0x3d2300); // Vector Q1
+        const edgeD = createVolumetricEdge(0xC084FC, 0x2e0f47); // Vector D
+        const edgeS = createVolumetricEdge(0x00F0FF, 0x003d42); // Vector S
+
+        // Dashed Hypotenuse S1 in P-Q plane
+        const s1Geom = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+        const s1Mat = new THREE.LineDashedMaterial({
+          color: 0x00F0FF,
+          dashSize: 0.35,
+          gapSize: 0.20,
+          transparent: true,
+          opacity: 0.80
+        });
+        const edgeS1 = new THREE.Line(s1Geom, s1Mat);
+        rootGroup.add(edgeS1);
+
+        // Tetrahedron Planar Faces with double-sided transparency & physical shading
+        function createFace(colorHex, opacityVal) {
+          const geom = new THREE.BufferGeometry();
+          const pos = new Float32Array(9);
+          geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+          const mat = new THREE.MeshStandardMaterial({
+            color: colorHex,
+            transparent: true,
+            opacity: opacityVal,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+            roughness: 0.35,
+            metalness: 0.15
+          });
+          const mesh = new THREE.Mesh(geom, mat);
+          rootGroup.add(mesh);
+          return mesh;
+        }
+
+        const facePQ = createFace(0x2ECC71, 0.24); // Triangle O-P-Q1 (Active-Reactive plane)
+        const faceQD = createFace(0xC084FC, 0.30); // Triangle P-Q1-D (Distortion plane)
+        const faceOD = createFace(0x00F0FF, 0.20); // Triangle O-Q1-D (Apparent fundamental plane)
+        const facePD = createFace(0x1ABC9C, 0.16); // Triangle O-P-D (Total hypotenuse plane)
+
+        // 3D Coordinate Axes (+P, +Q1, +D) with arrowheads
+        const axisGroup = new THREE.Group();
+        rootGroup.add(axisGroup);
+
+        const axisMat = new THREE.LineBasicMaterial({ color: 0x1E4675, transparent: true, opacity: 0.75 });
+        function createAxisLine(dest) {
+          const geom = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), dest]);
+          const line = new THREE.Line(geom, axisMat);
+          axisGroup.add(line);
+          return line;
+        }
+        const axLineP = createAxisLine(new THREE.Vector3(1, 0, 0));
+        const axLineQ = createAxisLine(new THREE.Vector3(0, 1, 0));
+        const axLineD = createAxisLine(new THREE.Vector3(0, 0, 1));
+
+        const coneGeom = new THREE.ConeGeometry(0.20, 0.50, 16);
+        const coneMat = new THREE.MeshBasicMaterial({ color: 0x38BDF8 });
+        
+        const coneP = new THREE.Mesh(coneGeom, coneMat);
+        coneP.rotation.z = -Math.PI / 2;
+        axisGroup.add(coneP);
+
+        const coneQ = new THREE.Mesh(coneGeom, coneMat);
+        axisGroup.add(coneQ);
+
+        const coneD = new THREE.Mesh(coneGeom, coneMat);
+        coneD.rotation.x = Math.PI / 2;
+        axisGroup.add(coneD);
+
+        // Technical ground grid
+        const gridHelper = new THREE.GridHelper(24, 24, 0x183863, 0x0c203b);
+        gridHelper.position.y = -0.01;
+        axisGroup.add(gridHelper);
+
+        // Glowing 3D Vertex Node Spheres
+        const sphereGeom = new THREE.SphereGeometry(0.22, 16, 16);
+        function createNode(colorHex) {
+          const mat = new THREE.MeshStandardMaterial({
+            color: colorHex,
+            emissive: colorHex,
+            emissiveIntensity: 0.55,
+            roughness: 0.2
+          });
+          const mesh = new THREE.Mesh(sphereGeom, mat);
+          rootGroup.add(mesh);
+          return mesh;
+        }
+
+        const nodeO = createNode(0xFFFFFF); // Origin O (White)
+        const nodeP = createNode(0x2ECC71); // Vertex P (Emerald)
+        const nodeQ = createNode(0xF39C12); // Vertex Q1 (Amber)
+        const nodeD = createNode(0x00F0FF); // Vertex D (Cyan)
+
+        tetraGL = {
+          renderer,
+          scene,
+          camera,
+          rootGroup,
+          axisGroup,
+          axLineP, axLineQ, axLineD,
+          coneP, coneQ, coneD,
+          edgeP, edgeQ, edgeD, edgeS1, edgeS,
+          facePQ, faceQD, faceOD, facePD,
+          nodeO, nodeP, nodeQ, nodeD
+        };
+        window.tetraGL = tetraGL;
+        return true;
+      } catch (e) {
+        console.warn('WebGL initialization failed, falling back to 2D canvas:', e);
+        tetraGL = null;
+        window.tetraGL = null;
+        return false;
+      }
+    }
+
+    window.renderPowerGeometry = renderPowerGeometry;
+    window.renderPowerGeometry2DFallback = renderPowerGeometry2DFallback;
+
+    function orientVectorCylinder(mesh, p1, p2, radius = 0.09) {
+      const dist = p1.distanceTo(p2);
+      if (dist < 0.01) {
+        mesh.visible = false;
+        return;
+      }
+      mesh.visible = true;
+      mesh.position.copy(p1);
+      mesh.scale.set(radius / 0.10, dist, radius / 0.10);
+      const dir = new THREE.Vector3().subVectors(p2, p1).normalize();
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+    }
+
+    function updateFaceGeometry(mesh, v1, v2, v3) {
+      const pos = mesh.geometry.attributes.position;
+      pos.setXYZ(0, v1.x, v1.y, v1.z);
+      pos.setXYZ(1, v2.x, v2.y, v2.z);
+      pos.setXYZ(2, v3.x, v3.y, v3.z);
+      pos.needsUpdate = true;
+      mesh.geometry.computeVertexNormals();
+    }
+
     function renderPowerGeometry(canvas) {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
@@ -2219,18 +2424,8 @@
       const targetH = Math.round(rect.height * dpr);
       if (targetW === 0 || targetH === 0) return;
 
-      if (canvas.width !== targetW || canvas.height !== targetH) {
-        canvas.width = targetW;
-        canvas.height = targetH;
-      }
-
-      const ctx = canvas.getContext('2d');
-      ctx.save();
-      ctx.scale(dpr, dpr);
-      const w = rect.width, h = rect.height;
-
-      ctx.fillStyle = '#030A14';
-      ctx.fillRect(0, 0, w, h);
+      // Initialize WebGL if not already done
+      const isGLAvailable = initTetrahedronWebGL(canvas);
 
       let P = 0, Q = 0, D = 0, S = 0;
       if (state.powerGeom.scope === 'total') {
@@ -2245,6 +2440,178 @@
         D = state.calc.d[idx] / 1000.0;
         S = state.calc.s[idx] / 1000.0;
       }
+
+      if (isGLAvailable && tetraGL) {
+        // ==========================================
+        // 1. HARDWARE-ACCELERATED WebGL 3D RENDERING
+        // ==========================================
+        if (canvas.width !== targetW || canvas.height !== targetH) {
+          tetraGL.renderer.setSize(rect.width, rect.height, false);
+          tetraGL.camera.aspect = rect.width / rect.height;
+          tetraGL.camera.updateProjectionMatrix();
+        }
+
+        // Coordinate normalization
+        const maxPower = Math.max(1.8, S);
+        const scale = 11.0 / maxPower;
+        const P_3d = P * scale;
+        const Q_3d = Q * scale;
+        const D_3d = D * scale;
+
+        const vO = new THREE.Vector3(0, 0, 0);
+        const vP = new THREE.Vector3(P_3d, 0, 0);
+        const vQ = new THREE.Vector3(P_3d, Q_3d, 0);
+        const vD = new THREE.Vector3(P_3d, Q_3d, D_3d);
+
+        // Update 3D Volumetric Vector Rods
+        orientVectorCylinder(tetraGL.edgeP, vO, vP, 0.09);
+        orientVectorCylinder(tetraGL.edgeQ, vP, vQ, 0.09);
+        orientVectorCylinder(tetraGL.edgeD, vQ, vD, 0.09);
+        orientVectorCylinder(tetraGL.edgeS, vO, vD, 0.12); // Thicker apparent power vector
+
+        // Update S1 Dashed Line in P-Q plane
+        const s1Pos = tetraGL.edgeS1.geometry.attributes.position;
+        s1Pos.setXYZ(0, vO.x, vO.y, vO.z);
+        s1Pos.setXYZ(1, vQ.x, vQ.y, vQ.z);
+        s1Pos.needsUpdate = true;
+        tetraGL.edgeS1.computeLineDistances();
+
+        // Update Shaded Planar Faces
+        updateFaceGeometry(tetraGL.facePQ, vO, vP, vQ);
+        updateFaceGeometry(tetraGL.faceQD, vP, vQ, vD);
+        updateFaceGeometry(tetraGL.faceOD, vO, vQ, vD);
+        updateFaceGeometry(tetraGL.facePD, vO, vP, vD);
+
+        // Update Vertex Spheres
+        tetraGL.nodeO.position.copy(vO);
+        tetraGL.nodeP.position.copy(vP);
+        tetraGL.nodeQ.position.copy(vQ);
+        tetraGL.nodeD.position.copy(vD);
+
+        // Update Coordinate Axes
+        const axisLen = Math.max(13.0, (S * scale) * 1.25);
+        const pLinePos = tetraGL.axLineP.geometry.attributes.position;
+        pLinePos.setXYZ(1, axisLen, 0, 0); pLinePos.needsUpdate = true;
+        tetraGL.coneP.position.set(axisLen, 0, 0);
+
+        const qLinePos = tetraGL.axLineQ.geometry.attributes.position;
+        qLinePos.setXYZ(1, 0, axisLen, 0); qLinePos.needsUpdate = true;
+        tetraGL.coneQ.position.set(0, axisLen, 0);
+
+        const dLinePos = tetraGL.axLineD.geometry.attributes.position;
+        dLinePos.setXYZ(1, 0, 0, axisLen); dLinePos.needsUpdate = true;
+        tetraGL.coneD.position.set(0, 0, axisLen);
+
+        // Spherical Camera Orbit Positioning (tracked to state.powerGeom)
+        const targetCenter = new THREE.Vector3(P_3d * 0.45, Q_3d * 0.45, D_3d * 0.45);
+        const distance = 25.0 / Math.max(0.2, state.powerGeom.zoom);
+        const elevation = Math.max(-1.45, Math.min(1.45, state.powerGeom.camRotX));
+        const azimuth = state.powerGeom.camRotY;
+
+        const cosElev = Math.cos(elevation);
+        tetraGL.camera.position.x = targetCenter.x + distance * cosElev * Math.sin(azimuth);
+        tetraGL.camera.position.y = targetCenter.y + distance * Math.sin(elevation);
+        tetraGL.camera.position.z = targetCenter.z + distance * cosElev * Math.cos(azimuth);
+        tetraGL.camera.lookAt(targetCenter);
+
+        // Render WebGL Scene
+        tetraGL.renderer.render(tetraGL.scene, tetraGL.camera);
+
+        // ==============================================================
+        // 2. CRISP SUBPIXEL 2D TYPOGRAPHY OVERLAY (JetBrains Mono Badges)
+        // ==============================================================
+        const labelCanvas = document.getElementById('canvas-tetrahedron-labels');
+        if (labelCanvas) {
+          if (labelCanvas.width !== targetW || labelCanvas.height !== targetH) {
+            labelCanvas.width = targetW;
+            labelCanvas.height = targetH;
+          }
+          const ctx = labelCanvas.getContext('2d');
+          ctx.save();
+          ctx.scale(dpr, dpr);
+          const w = rect.width, h = rect.height;
+          ctx.clearRect(0, 0, w, h);
+
+          function project3DToScreen(vec3) {
+            const projected = vec3.clone().project(tetraGL.camera);
+            return {
+              x: (projected.x * 0.5 + 0.5) * w,
+              y: (-projected.y * 0.5 + 0.5) * h,
+              visible: projected.z < 1.0
+            };
+          }
+
+          // Draw Axis Indicators
+          const axP = project3DToScreen(new THREE.Vector3(axisLen, 0, 0));
+          const axQ = project3DToScreen(new THREE.Vector3(0, axisLen, 0));
+          const axD = project3DToScreen(new THREE.Vector3(0, 0, axisLen));
+
+          ctx.font = 'bold 9px JetBrains Mono';
+          ctx.fillStyle = '#567D9C';
+          if (axP.visible) ctx.fillText('+P', axP.x + 5, axP.y);
+          if (axQ.visible) ctx.fillText('+Q1', axQ.x, axQ.y - 6);
+          if (axD.visible) ctx.fillText('+D', axD.x + 5, axD.y);
+
+          // Draw Vertex Node Badges
+          const sO = project3DToScreen(vO);
+          const sP = project3DToScreen(vP);
+          const sQ = project3DToScreen(vQ);
+          const sD = project3DToScreen(vD);
+
+          const S1 = Math.hypot(P, Q);
+          const distPQ = Math.hypot(sP.x - sQ.x, sP.y - sQ.y);
+          const distQD = Math.hypot(sQ.x - sD.x, sQ.y - sD.y);
+
+          const badgeList = [
+            { pt: sO, label: '0', col: '#FFFFFF', ox: 6, oy: -6, bg: 'rgba(6, 15, 29, 0.85)', bCol: '#235188' },
+            { pt: sP, label: `P: ${P.toFixed(1)}k`, col: '#2ECC71', ox: 6, oy: (distPQ < 16 ? 16 : -6), bg: 'rgba(6, 26, 15, 0.88)', bCol: '#2ECC71' }
+          ];
+          if (distPQ >= 10 || Math.abs(Q) > 0.1) {
+            badgeList.push({ pt: sQ, label: `S1: ${S1.toFixed(1)}k`, col: '#F39C12', ox: 6, oy: -6, bg: 'rgba(28, 18, 5, 0.88)', bCol: '#F39C12' });
+          }
+          if (distQD >= 10 || D > 0.1) {
+            badgeList.push({ pt: sD, label: `S: ${S.toFixed(1)} kVA`, col: '#00F0FF', ox: 6, oy: (distQD < 16 ? -16 : -6), bg: 'rgba(4, 22, 33, 0.88)', bCol: '#00F0FF' });
+          }
+
+          ctx.font = 'bold 9px JetBrains Mono';
+          for (let b of badgeList) {
+            if (!b.pt.visible) continue;
+            const tw = ctx.measureText(b.label).width;
+            const bx = b.pt.x + b.ox;
+            const by = b.pt.y + b.oy - 10;
+
+            ctx.fillStyle = b.bg;
+            ctx.fillRect(bx - 3, by - 1, tw + 6, 13);
+            ctx.strokeStyle = b.bCol;
+            ctx.lineWidth = 0.8;
+            ctx.strokeRect(bx - 3, by - 1, tw + 6, 13);
+
+            ctx.fillStyle = b.col;
+            ctx.fillText(b.label, bx, by + 9);
+          }
+
+          ctx.restore();
+        }
+      } else {
+        // =========================================================
+        // FALLBACK: 2D Canvas Projection (if WebGL/Three.js unavailable)
+        // =========================================================
+        renderPowerGeometry2DFallback(canvas, P, Q, D, S, rect, dpr, targetW, targetH);
+      }
+    }
+
+    function renderPowerGeometry2DFallback(canvas, P, Q, D, S, rect, dpr, targetW, targetH) {
+      if (canvas.width !== targetW || canvas.height !== targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      const w = rect.width, h = rect.height;
+
+      ctx.fillStyle = '#030A14';
+      ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
       const cy = h / 2 + 15;
@@ -3045,10 +3412,20 @@
       if (lblScopeZoom) lblScopeZoom.textContent = dict.lblScopeVZoom;
       const txtScopeReset = document.getElementById('txt-scope-reset-zoom');
       if (txtScopeReset) txtScopeReset.textContent = dict.txtScopeReset;
+      const scopeCursorEl = document.getElementById('scope-cursor-readout');
+      if (scopeCursorEl && (state.scope.cursorX === null || state.scope.cursorX === undefined)) {
+        scopeCursorEl.textContent = dict.scopeCursorDefault;
+      }
 
       // Phasor Tab
       document.getElementById('txt-rotate-phasor').textContent = state.phasor.dynamicRotate ? dict.rotateOn : dict.rotateOff;
       document.getElementById('txt-measure-phase').textContent = dict.measureAngle;
+      const chipPhA = document.getElementById('chip-phasor-phase-a');
+      if (chipPhA) chipPhA.textContent = dict.pmPhaseA;
+      const chipPhB = document.getElementById('chip-phasor-phase-b');
+      if (chipPhB) chipPhB.textContent = dict.pmPhaseB;
+      const chipPhC = document.getElementById('chip-phasor-phase-c');
+      if (chipPhC) chipPhC.textContent = dict.pmPhaseC;
       document.getElementById('lbl-cap-quad').textContent = dict.capQuadrant;
       document.getElementById('lbl-ind-quad').textContent = dict.indQuadrant;
       document.getElementById('txt-phasometer-hdr').textContent = dict.phasometerHdr;
@@ -3103,11 +3480,16 @@
       document.getElementById('lbl-thd-u').textContent = dict.thdULbl;
       document.getElementById('lbl-in-rms').textContent = dict.inRmsLbl;
       document.getElementById('lbl-in-peak').textContent = dict.inPeakLbl;
-      document.getElementById('th-harm-ord').textContent = dict.harmTableColHarm;
-      document.getElementById('th-harm-freq').textContent = dict.harmTableColFreq;
-      document.getElementById('th-harm-i').textContent = dict.harmTableColI;
-      document.getElementById('th-harm-pct').textContent = dict.harmTableColPct;
-      document.getElementById('th-harm-u').textContent = dict.harmTableColU;
+      const thHarmOrd = document.getElementById('th-harm-ord');
+      if (thHarmOrd) thHarmOrd.textContent = dict.harmTableColHarm;
+      const thHarmFreq = document.getElementById('th-harm-freq');
+      if (thHarmFreq) thHarmFreq.textContent = dict.harmTableColFreq;
+      const thHarmI = document.getElementById('th-harm-i');
+      if (thHarmI) thHarmI.textContent = dict.harmTableColI;
+      const thHarmPct = document.getElementById('th-harm-pct');
+      if (thHarmPct) thHarmPct.textContent = dict.harmTableColPct;
+      const thHarmU = document.getElementById('th-harm-u');
+      if (thHarmU) thHarmU.textContent = dict.harmTableColU;
 
       // Diagnostics Tab
       document.getElementById('txt-diag-k2u').textContent = dict.diagK2uTitle;
@@ -3144,8 +3526,10 @@
       document.getElementById('lbl-diag-wp').textContent = dict.diagActiveW;
       document.getElementById('lbl-diag-wq').textContent = dict.diagReactiveW;
       document.getElementById('lbl-diag-ws').textContent = dict.diagApparentW;
-      document.getElementById('breakdown-hdr').textContent = dict.breakdownHdr;
-      document.getElementById('th-pbr-phase').textContent = dict.thPhase;
+      const txtBreakdownHdr = document.getElementById('txt-breakdown-hdr');
+      if (txtBreakdownHdr) txtBreakdownHdr.textContent = dict.breakdownHdr;
+      const thPbrPhase = document.getElementById('th-pbr-phase');
+      if (thPbrPhase) thPbrPhase.textContent = dict.thPhase;
 
       // Footer
       document.getElementById('txt-footer-math').textContent = dict.footerEngine;
@@ -3642,6 +4026,18 @@
         ru: 'Отображать мгновенную мощность фазы C: p_C(t) = u_C(t) · i_C(t)',
         en: 'Display Phase C instantaneous power: p_C(t) = u_C(t) · i_C(t)'
       },
+      'btn-scope-zoom-out': {
+        ru: 'Уменьшить масштаб осциллографа по вертикали (Y-Zoom)',
+        en: 'Decrease oscilloscope vertical scale (Y-Zoom)'
+      },
+      'btn-scope-zoom-in': {
+        ru: 'Увеличить масштаб осциллографа по вертикали (Y-Zoom)',
+        en: 'Increase oscilloscope vertical scale (Y-Zoom)'
+      },
+      'btn-scope-reset-zoom': {
+        ru: 'Сбросить масштаб осциллографа по вертикали к 100%',
+        en: 'Reset oscilloscope vertical scale to 100%'
+      },
 
       // Phasor tab
       'btn-phasor-rotate-toggle': {
@@ -3721,6 +4117,18 @@
       'btn-reset-energy': {
         ru: 'Сбросить накопленные показания счётчиков активной, реактивной и полной энергии',
         en: 'Reset accumulated active, reactive, and apparent energy counters'
+      },
+      'btn-topo-zoom-out': {
+        ru: 'Уменьшить масштаб топографической диаграммы напряжений',
+        en: 'Zoom out topographical voltage diagram'
+      },
+      'btn-topo-zoom-in': {
+        ru: 'Увеличить масштаб топографической диаграммы напряжений',
+        en: 'Zoom in topographical voltage diagram'
+      },
+      'btn-topo-reset-cam': {
+        ru: 'Сбросить зум и панорамирование топографической диаграммы к 100%',
+        en: 'Reset topographical diagram zoom and pan to 100%'
       }
     };
 
@@ -3883,7 +4291,9 @@
         // Strip native title to avoid clashing OS tooltip
         if (el.hasAttribute('title')) {
           const t = el.getAttribute('title');
-          if (!el.dataset.tooltipRu) el.dataset.tooltipRu = t;
+          if (!BUTTON_TOOLTIPS[el.id] && !el.dataset.tooltipRu) {
+            el.dataset.tooltipRu = t;
+          }
           el.removeAttribute('title');
         }
 
@@ -4223,7 +4633,7 @@
                   <th class="py-0.5 px-1">${isRu ? 'Гармоника' : 'Harmonic'}</th>
                   <th class="px-1">${isRu ? 'Частота' : 'Freq'}</th>
                   <th class="px-1">${isRu ? `Ток I_${pLetter} (A RMS)` : `Current I_${pLetter} (A RMS)`}</th>
-                  <th class="px-1">% от 1-й</th>
+                  <th class="px-1">${isRu ? '% от 1-й' : '% of 1st'}</th>
                   <th class="px-1">${isRu ? `Напряжение U_${pLetter} (V)` : `Voltage U_${pLetter} (V)`}</th>
                   <th class="px-1">U (%)</th>
                 </tr>`;
