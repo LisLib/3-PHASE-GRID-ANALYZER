@@ -742,44 +742,51 @@
               </div>
 
               <div class="overflow-x-auto text-xs">
-                <table class="w-full text-left">
+                <table class="w-full text-left table-fixed font-mono tabular-nums">
+                  <colgroup>
+                    <col class="w-[24%]">
+                    <col class="w-[19%]">
+                    <col class="w-[19%]">
+                    <col class="w-[19%]">
+                    <col class="w-[19%]">
+                  </colgroup>
                   <thead>
-                    <tr class="text-[#8FAECB] border-b border-[#183863]">
-                      <th class="py-1" id="th-pm-phase">Фаза</th>
-                      <th>U (V)</th>
-                      <th>I (A)</th>
-                      <th>φ (°)</th>
-                      <th>cos φ</th>
+                    <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
+                      <th class="py-1 px-1" id="th-pm-phase">Фаза</th>
+                      <th class="px-1 text-right">U (V)</th>
+                      <th class="px-1 text-right">I (A)</th>
+                      <th class="px-1 text-right">φ (°)</th>
+                      <th class="px-1 text-right">cos φ</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-[#183863]/40">
                     <tr>
-                      <td class="py-1 font-bold text-amber-400" id="row-pm-phase-a">Фаза A</td>
-                      <td id="pm-ua" class="text-white">230.0 V</td>
-                      <td id="pm-ia" class="text-white">15.0 A</td>
-                      <td id="pm-phia" class="text-cyan-300">0.0°</td>
-                      <td id="pm-cos-a" class="text-emerald-400 font-bold">1.000</td>
+                      <td class="py-1 px-1 font-bold text-amber-400" id="row-pm-phase-a">Фаза A</td>
+                      <td id="pm-ua" class="text-white text-right px-1">230.0 V</td>
+                      <td id="pm-ia" class="text-white text-right px-1">15.0 A</td>
+                      <td id="pm-phia" class="text-cyan-300 text-right px-1">0.0°</td>
+                      <td id="pm-cos-a" class="text-emerald-400 font-bold text-right px-1">1.000</td>
                     </tr>
                     <tr>
-                      <td class="py-1 font-bold text-emerald-400" id="row-pm-phase-b">Фаза B</td>
-                      <td id="pm-ub" class="text-white">230.0 V</td>
-                      <td id="pm-ib" class="text-white">15.0 A</td>
-                      <td id="pm-phib" class="text-cyan-300">0.0°</td>
-                      <td id="pm-cos-b" class="text-emerald-400 font-bold">1.000</td>
+                      <td class="py-1 px-1 font-bold text-emerald-400" id="row-pm-phase-b">Фаза B</td>
+                      <td id="pm-ub" class="text-white text-right px-1">230.0 V</td>
+                      <td id="pm-ib" class="text-white text-right px-1">15.0 A</td>
+                      <td id="pm-phib" class="text-cyan-300 text-right px-1">0.0°</td>
+                      <td id="pm-cos-b" class="text-emerald-400 font-bold text-right px-1">1.000</td>
                     </tr>
                     <tr>
-                      <td class="py-1 font-bold text-rose-400" id="row-pm-phase-c">Фаза C</td>
-                      <td id="pm-uc" class="text-white">230.0 V</td>
-                      <td id="pm-ic" class="text-white">15.0 A</td>
-                      <td id="pm-phic" class="text-cyan-300">0.0°</td>
-                      <td id="pm-cos-c" class="text-emerald-400 font-bold">1.000</td>
+                      <td class="py-1 px-1 font-bold text-rose-400" id="row-pm-phase-c">Фаза C</td>
+                      <td id="pm-uc" class="text-white text-right px-1">230.0 V</td>
+                      <td id="pm-ic" class="text-white text-right px-1">15.0 A</td>
+                      <td id="pm-phic" class="text-cyan-300 text-right px-1">0.0°</td>
+                      <td id="pm-cos-c" class="text-emerald-400 font-bold text-right px-1">1.000</td>
                     </tr>
                     <tr class="bg-[#0D2444]/40 font-bold">
-                      <td class="py-1 text-cyan-400" id="row-pm-phase-n">Нейтраль N</td>
-                      <td class="text-[#8FAECB]">—</td>
-                      <td id="pm-in" class="text-cyan-300">0.0 A</td>
-                      <td class="text-[#8FAECB]">—</td>
-                      <td class="text-[#8FAECB]">—</td>
+                      <td class="py-1 px-1 text-cyan-400" id="row-pm-phase-n">Нейтраль N</td>
+                      <td class="text-[#8FAECB] text-right px-1">—</td>
+                      <td id="pm-in" class="text-cyan-300 text-right px-1">0.0 A</td>
+                      <td class="text-[#8FAECB] text-right px-1">—</td>
+                      <td class="text-[#8FAECB] text-right px-1">—</td>
                     </tr>
                   </tbody>
                 </table>
@@ -958,15 +965,23 @@
 
           <!-- Harmonics Parameters Table (Snug fit for all 11 rows without wasting space) -->
           <div class="shrink-0 bg-[#081628] p-1.5 rounded-lg border border-[#183863] text-xs overflow-x-auto">
-            <table class="w-full text-left">
+            <table id="table-harmonics" class="w-full text-left table-fixed font-mono tabular-nums">
+              <colgroup id="colgroup-harmonics">
+                <col class="w-[14%]">
+                <col class="w-[14%]">
+                <col class="w-[18%]">
+                <col class="w-[18%]">
+                <col class="w-[18%]">
+                <col class="w-[18%]">
+              </colgroup>
               <thead id="thead-harmonics">
                 <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
-                  <th class="py-1" id="th-harm-ord">Гармоника</th>
-                  <th id="th-harm-freq">Частота</th>
-                  <th id="th-harm-i">Ток I (A RMS)</th>
-                  <th id="th-harm-pct">% от 1-й</th>
-                  <th id="th-harm-u">Напряжение U (V)</th>
-                  <th>U (%)</th>
+                  <th class="py-0.5 px-1" id="th-harm-ord">Гармоника</th>
+                  <th class="px-1" id="th-harm-freq">Частота</th>
+                  <th class="px-1" id="th-harm-i">Ток I (A RMS)</th>
+                  <th class="px-1 text-right" id="th-harm-pct">% от 1-й</th>
+                  <th class="px-1 text-right" id="th-harm-u">Напряжение U (V)</th>
+                  <th class="px-1 text-right">U (%)</th>
                 </tr>
               </thead>
               <tbody id="tbody-harmonics" class="divide-y divide-[#183863]/40">
@@ -1153,20 +1168,33 @@
             </div>
             
             <div class="overflow-x-auto text-xs">
-              <table class="w-full text-left">
+              <table id="table-phase-breakdown" class="w-full text-left table-fixed font-mono tabular-nums min-w-[700px]">
+                <colgroup>
+                  <col class="w-[11%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                  <col class="w-[8%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                  <col class="w-[9%]">
+                </colgroup>
                 <thead>
                   <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
-                    <th class="py-1" id="th-pbr-phase">Фаза</th>
-                    <th>U (V)</th>
-                    <th>I (A)</th>
-                    <th>P (kW)</th>
-                    <th>Q1 (kvar)</th>
-                    <th>D (kVA)</th>
-                    <th>S (kVA)</th>
-                    <th>cos φ1</th>
-                    <th>True PF</th>
-                    <th>THD_U</th>
-                    <th>THD_I</th>
+                    <th class="py-1 px-1 text-left" id="th-pbr-phase">Фаза</th>
+                    <th class="px-1 text-right">U (V)</th>
+                    <th class="px-1 text-right">I (A)</th>
+                    <th class="px-1 text-right">P (kW)</th>
+                    <th class="px-1 text-right">Q1 (kvar)</th>
+                    <th class="px-1 text-right">D (kVA)</th>
+                    <th class="px-1 text-right">S (kVA)</th>
+                    <th class="px-1 text-right">cos φ1</th>
+                    <th class="px-1 text-right">True PF</th>
+                    <th class="px-1 text-right">THD_U</th>
+                    <th class="px-1 text-right">THD_I</th>
                   </tr>
                 </thead>
                 <tbody id="tbody-phase-breakdown" class="divide-y divide-[#183863]/40">
@@ -1615,7 +1643,8 @@
         uLinePhasors: []
       },
 
-      needsTableUpdate: true
+      needsTableUpdate: true,
+      needsUIUpdate: true
     };
 
     const PRESETS = [
@@ -1634,6 +1663,7 @@
         apply: (s) => {
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           for (let p of s.phases) {
             p.i1 = 25.0; p.phi1 = 38.7;
             p.h3 = 2.0; p.h5 = 4.0; p.h7 = 2.0; p.h9 = 0; p.h11 = 0;
@@ -1644,6 +1674,7 @@
         apply: (s) => {
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           for (let p of s.phases) {
             p.i1 = 22.0; p.phi1 = -40.5;
             p.h3 = 0; p.h5 = 6.0; p.h7 = 3.0; p.h9 = 0; p.h11 = 0;
@@ -1654,6 +1685,7 @@
         apply: (s) => {
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           for (let p of s.phases) {
             p.i1 = 18.0; p.phi1 = 8.0;
             p.h3 = 65.0; p.h5 = 25.0; p.h7 = 12.0; p.h9 = 8.0; p.h11 = 4.0;
@@ -1664,6 +1696,7 @@
         apply: (s) => {
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           for (let p of s.phases) {
             p.i1 = 28.0; p.phi1 = 22.0;
             p.h3 = 0.0; p.h5 = 25.0; p.h7 = 16.0; p.h9 = 0.0; p.h11 = 8.0;
@@ -1674,6 +1707,7 @@
         apply: (s) => {
           s.linkPhases = false;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           s.phases[0] = { i1: 38.0, phi1: 5.0, h3: 15, h5: 5, h7: 0, h9: 0, h11: 0 };
           s.phases[1] = { i1: 8.0, phi1: 15.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
           s.phases[2] = { i1: 4.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
@@ -1683,6 +1717,7 @@
         apply: (s) => {
           s.linkPhases = false;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           s.phases[0] = { i1: 20.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
           s.phases[1] = { i1: 20.0, phi1: 45.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
           s.phases[2] = { i1: 20.0, phi1: -45.0, h3: 0, h5: 5, h7: 0, h9: 0, h11: 0 };
@@ -1692,6 +1727,7 @@
         apply: (s) => {
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           for (let p of s.phases) {
             p.i1 = 30.0; p.phi1 = 31.8;
             p.h3 = 30.0; p.h5 = 15.0; p.h7 = 8.0; p.h9 = 3.0; p.h11 = 2.0;
@@ -1713,6 +1749,7 @@
         apply: (s) => {
           s.linkPhases = false;
           s.grid.unbalanceEnabled = false;
+          s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
           s.phases[0] = { i1: 22.0, phi1: 45.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
           s.phases[1] = { i1: 16.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
           s.phases[2] = { i1: 20.0, phi1: -32.0, h3: 4, h5: 0, h7: 0, h9: 0, h11: 0 };
@@ -1768,7 +1805,7 @@
           let pct = harmPercs[h];
           if (pct > 0) {
             let ihPeak = Math.SQRT2 * (p.i1 * pct / 100.0);
-            let hAng = ord * (omega * t + eThetaK);
+            let hAng = ord * (omega * t + eThetaK - phiRad);
             iInst += ihPeak * Math.sin(hAng);
             diInst_dt += ihPeak * (ord * omega) * Math.cos(hAng);
           }
@@ -1933,6 +1970,7 @@
       state.calc.uLineRms = [uAB.mag(), uBC.mag(), uCA.mag()];
 
       state.needsTableUpdate = true;
+      state.needsUIUpdate = true;
     }
 
     function renderOscilloscope(canvas) {
@@ -4607,138 +4645,234 @@
 
       if (state.needsTableUpdate) {
         state.needsTableUpdate = false;
+        updateHarmonicsTable();
+        updatePhaseBreakdownTable();
+      }
 
-        const theadH = document.getElementById('thead-harmonics');
-        const tbodyH = document.getElementById('tbody-harmonics');
-        if (tbodyH) {
-          const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-          const oddIdxMap = { 1: 0, 3: 1, 5: 2, 7: 3, 9: 4, 11: 5 };
+      updateDynamicSimUI();
+    }
 
-          if (theadH) {
-            if (is3Ph) {
-              theadH.innerHTML = `
-                <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
-                  <th class="py-0.5 px-1">${isRu ? 'Гармоника' : 'Harmonic'}</th>
-                  <th class="px-1">${isRu ? 'Частота' : 'Freq'}</th>
-                  <th class="px-1 text-amber-400 font-bold">${isRu ? 'Фаза A (I)' : 'Phase A (I)'}</th>
-                  <th class="px-1 text-emerald-400 font-bold">${isRu ? 'Фаза B (I)' : 'Phase B (I)'}</th>
-                  <th class="px-1 text-rose-400 font-bold">${isRu ? 'Фаза C (I)' : 'Phase C (I)'}</th>
-                  <th class="px-1 text-[#FFD700]">${isRu ? 'U_PCC (ср)' : 'U_PCC (avg)'}</th>
-                </tr>`;
-            } else {
-              const pIdx = parseInt(state.fft && state.fft.scope ? state.fft.scope : '0');
-              const pLetter = ['A', 'B', 'C'][pIdx];
-              theadH.innerHTML = `
-                <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
-                  <th class="py-0.5 px-1">${isRu ? 'Гармоника' : 'Harmonic'}</th>
-                  <th class="px-1">${isRu ? 'Частота' : 'Freq'}</th>
-                  <th class="px-1">${isRu ? `Ток I_${pLetter} (A RMS)` : `Current I_${pLetter} (A RMS)`}</th>
-                  <th class="px-1">${isRu ? '% от 1-й' : '% of 1st'}</th>
-                  <th class="px-1">${isRu ? `Напряжение U_${pLetter} (V)` : `Voltage U_${pLetter} (V)`}</th>
-                  <th class="px-1">U (%)</th>
-                </tr>`;
-            }
-          }
+    let lastHarmonicsModeKey = '';
 
-          let html = '';
-          if (is3Ph) {
-            for (let k = 0; k < orders.length; k++) {
-              let ord = orders[k];
-              let freq = ord * state.grid.fBase;
-              let suffix = isRu 
-                ? '-я' 
-                : (ord === 1 ? 'st' : (ord === 2 ? 'nd' : (ord === 3 ? 'rd' : 'th')));
-              let isOdd = oddIdxMap[ord] !== undefined;
-              let uIdx = isOdd ? oddIdxMap[ord] : -1;
+    function updateHarmonicsTable() {
+      const theadH = document.getElementById('thead-harmonics');
+      const tbodyH = document.getElementById('tbody-harmonics');
+      const colgroupH = document.getElementById('colgroup-harmonics');
+      if (!tbodyH) return;
 
-              let pctA = isOdd ? ((ord === 1) ? 100.0 : (state.phases[0]['h' + ord] || 0.0)) : 0.0;
-              let pctB = isOdd ? ((ord === 1) ? 100.0 : (state.phases[1]['h' + ord] || 0.0)) : 0.0;
-              let pctC = isOdd ? ((ord === 1) ? 100.0 : (state.phases[2]['h' + ord] || 0.0)) : 0.0;
+      const isRu = state.lang === 'ru';
+      const is3Ph = (state.fft && state.fft.scope === '3ph');
+      const pIdx = parseInt(state.fft && state.fft.scope ? state.fft.scope : '0');
+      const pLetter = ['A', 'B', 'C'][pIdx] || 'A';
+      const modeKey = `${is3Ph ? '3ph' : pLetter}_${state.lang}`;
 
-              let iA = (state.phases[0].i1 * pctA) / 100.0;
-              let iB = (state.phases[1].i1 * pctB) / 100.0;
-              let iC = (state.phases[2].i1 * pctC) / 100.0;
-
-              let uA = isOdd ? c.uHarmAmps[0][uIdx] : 0.0;
-              let uB = isOdd ? c.uHarmAmps[1][uIdx] : 0.0;
-              let uC = isOdd ? c.uHarmAmps[2][uIdx] : 0.0;
-              let uAvg = (uA + uB + uC) / 3.0;
-              let u1Avg = (c.uHarmAmps[0][0] + c.uHarmAmps[1][0] + c.uHarmAmps[2][0]) / 3.0;
-              let uPctAvg = (uAvg / Math.max(1.0, u1Avg)) * 100.0;
-
-              let rowDimClass = isOdd ? '' : 'opacity-35';
-
-              html += `<tr class="${rowDimClass} hover:bg-[#0D2444]/60 transition-colors">
-                <td class="py-0.5 px-1 font-bold text-cyan-300 text-[10px]">${ord}${suffix}</td>
-                <td class="px-1 text-[10px] text-[#8FAECB]">${freq.toFixed(0)} Hz</td>
-                <td class="px-1 text-amber-300 font-bold text-[10px]">${iA.toFixed(2)} A <span class="text-amber-400/70 text-[9px]">(${pctA.toFixed(0)}%)</span></td>
-                <td class="px-1 text-emerald-300 font-bold text-[10px]">${iB.toFixed(2)} A <span class="text-emerald-400/70 text-[9px]">(${pctB.toFixed(0)}%)</span></td>
-                <td class="px-1 text-rose-300 font-bold text-[10px]">${iC.toFixed(2)} A <span class="text-rose-400/70 text-[9px]">(${pctC.toFixed(0)}%)</span></td>
-                <td class="px-1 text-[#FFD700] font-bold text-[10px]">${uAvg.toFixed(1)} V <span class="text-[#FFD700]/70 text-[9px]">(${uPctAvg.toFixed(1)}%)</span></td>
-              </tr>`;
-            }
-          } else {
-            const pIdx = parseInt(state.fft && state.fft.scope ? state.fft.scope : '0');
-            const p = state.phases[pIdx];
-            const uAmps = c.uHarmAmps[pIdx];
-            const u1 = Math.max(1.0, uAmps[0]);
-
-            for (let k = 0; k < orders.length; k++) {
-              let ord = orders[k];
-              let freq = ord * state.grid.fBase;
-              let suffix = isRu 
-                ? '-я' 
-                : (ord === 1 ? 'st' : (ord === 2 ? 'nd' : (ord === 3 ? 'rd' : 'th')));
-              let isOdd = oddIdxMap[ord] !== undefined;
-              let uIdx = isOdd ? oddIdxMap[ord] : -1;
-
-              let pct = isOdd ? ((ord === 1) ? 100.0 : (p['h' + ord] || 0.0)) : 0.0;
-              let iHarm = (p.i1 * pct) / 100.0;
-              let uHarm = isOdd ? uAmps[uIdx] : 0.0;
-              let uPct = (uHarm / u1) * 100.0;
-
-              let rowDimClass = isOdd ? '' : 'opacity-35';
-
-              html += `<tr class="${rowDimClass} hover:bg-[#0D2444]/60 transition-colors">
-                <td class="py-0.5 px-1 font-bold text-cyan-300 text-[10px]">${ord}${suffix}</td>
-                <td class="px-1 text-[10px] text-[#8FAECB]">${freq.toFixed(0)} Hz</td>
-                <td class="px-1 text-white font-bold text-[10px]">${iHarm.toFixed(2)} A</td>
-                <td class="px-1 text-cyan-400 text-[10px]">${pct.toFixed(0)}%</td>
-                <td class="px-1 text-[#FFD700] font-bold text-[10px]">${uHarm.toFixed(1)} V</td>
-                <td class="px-1 text-[#FFD700] text-[10px]">${uPct.toFixed(1)}%</td>
-              </tr>`;
-            }
-          }
-          tbodyH.innerHTML = html;
-        }
-
-        const tbodyP = document.getElementById('tbody-phase-breakdown');
-        if (tbodyP) {
-          const pNames = state.lang === 'ru' 
-            ? ['Фаза A', 'Фаза B', 'Фаза C'] 
-            : ['Phase A', 'Phase B', 'Phase C'];
-          const pColors = ['text-amber-400', 'text-emerald-400', 'text-rose-400'];
-          let html = '';
-          for (let k = 0; k < 3; k++) {
-            html += `<tr>
-              <td class="py-1 font-bold ${pColors[k]}">${pNames[k]}</td>
-              <td class="text-white">${c.uRms[k].toFixed(1)} V</td>
-              <td class="text-white font-bold">${c.iRms[k].toFixed(1)} A</td>
-              <td class="text-emerald-400">${(c.p[k]/1000).toFixed(2)}</td>
-              <td class="text-amber-400">${(c.q1[k]/1000).toFixed(2)}</td>
-              <td class="text-purple-400">${(c.d[k]/1000).toFixed(2)}</td>
-              <td class="text-cyan-400 font-bold">${(c.s[k]/1000).toFixed(2)}</td>
-              <td class="text-white">${c.cosPhi1[k].toFixed(3)}</td>
-              <td class="text-cyan-300 font-bold">${c.pf[k].toFixed(3)}</td>
-              <td class="text-amber-300 font-bold">${c.thdU[k].toFixed(1)}%</td>
-              <td class="text-white">${c.thdI[k].toFixed(1)}%</td>
-            </tr>`;
-          }
-          tbodyP.innerHTML = html;
+      if (colgroupH) {
+        if (is3Ph) {
+          colgroupH.innerHTML = '<col class="w-[14%]"><col class="w-[14%]"><col class="w-[18%]"><col class="w-[18%]"><col class="w-[18%]"><col class="w-[18%]">';
+        } else {
+          colgroupH.innerHTML = '<col class="w-[14%]"><col class="w-[14%]"><col class="w-[22%]"><col class="w-[16%]"><col class="w-[18%]"><col class="w-[16%]">';
         }
       }
 
-      document.getElementById('lbl-simtime').textContent = `${state.simTime.toFixed(3)} s`;
+      if (theadH && lastHarmonicsModeKey !== modeKey) {
+        lastHarmonicsModeKey = modeKey;
+        if (is3Ph) {
+          theadH.innerHTML = `
+            <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
+              <th class="py-0.5 px-1 text-left" id="th-harm-ord">${isRu ? 'Гармоника' : 'Harmonic'}</th>
+              <th class="px-1 text-left" id="th-harm-freq">${isRu ? 'Частота' : 'Freq'}</th>
+              <th class="px-1 text-left text-amber-400 font-bold" id="th-harm-i">${isRu ? 'Фаза A (I)' : 'Phase A (I)'}</th>
+              <th class="px-1 text-left text-emerald-400 font-bold">${isRu ? 'Фаза B (I)' : 'Phase B (I)'}</th>
+              <th class="px-1 text-left text-rose-400 font-bold">${isRu ? 'Фаза C (I)' : 'Phase C (I)'}</th>
+              <th class="px-1 text-left text-[#FFD700]">${isRu ? 'U_PCC (ср)' : 'U_PCC (avg)'}</th>
+            </tr>`;
+        } else {
+          theadH.innerHTML = `
+            <tr class="text-[#8FAECB] border-b border-[#183863] text-[10px]">
+              <th class="py-0.5 px-1 text-left" id="th-harm-ord">${isRu ? 'Гармоника' : 'Harmonic'}</th>
+              <th class="px-1 text-left" id="th-harm-freq">${isRu ? 'Частота' : 'Freq'}</th>
+              <th class="px-1 text-left" id="th-harm-i">${isRu ? `Ток I_${pLetter} (A RMS)` : `Current I_${pLetter} (A RMS)`}</th>
+              <th class="px-1 text-right" id="th-harm-pct">${isRu ? '% от 1-й' : '% of 1st'}</th>
+              <th class="px-1 text-right" id="th-harm-u">${isRu ? `Напряжение U_${pLetter} (V)` : `Voltage U_${pLetter} (V)`}</th>
+              <th class="px-1 text-right">U (%)</th>
+            </tr>`;
+        }
+      }
+
+      const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      const oddIdxMap = { 1: 0, 3: 1, 5: 2, 7: 3, 9: 4, 11: 5 };
+      const c = state.calc;
+
+      // Ensure exactly 11 rows exist with 6 cells each
+      if (tbodyH.children.length !== 11) {
+        let initHtml = '';
+        for (let k = 0; k < 11; k++) {
+          initHtml += '<tr class="transition-colors"><td class="py-0.5 px-1 font-bold text-cyan-300 text-[10px]"></td><td class="px-1 text-[10px] text-[#8FAECB]"></td><td class="px-1 text-[10px]"></td><td class="px-1 text-[10px]"></td><td class="px-1 text-[10px]"></td><td class="px-1 text-[10px]"></td></tr>';
+        }
+        tbodyH.innerHTML = initHtml;
+      }
+
+      if (is3Ph) {
+        for (let k = 0; k < orders.length; k++) {
+          const ord = orders[k];
+          const freq = ord * state.grid.fBase;
+          const suffix = isRu 
+            ? '-я' 
+            : (ord === 1 ? 'st' : (ord === 2 ? 'nd' : (ord === 3 ? 'rd' : 'th')));
+          const isOdd = oddIdxMap[ord] !== undefined;
+          const uIdx = isOdd ? oddIdxMap[ord] : -1;
+
+          const pctA = isOdd ? ((ord === 1) ? 100.0 : (state.phases[0]['h' + ord] || 0.0)) : 0.0;
+          const pctB = isOdd ? ((ord === 1) ? 100.0 : (state.phases[1]['h' + ord] || 0.0)) : 0.0;
+          const pctC = isOdd ? ((ord === 1) ? 100.0 : (state.phases[2]['h' + ord] || 0.0)) : 0.0;
+
+          const iA = (state.phases[0].i1 * pctA) / 100.0;
+          const iB = (state.phases[1].i1 * pctB) / 100.0;
+          const iC = (state.phases[2].i1 * pctC) / 100.0;
+
+          const uA = isOdd ? c.uHarmAmps[0][uIdx] : 0.0;
+          const uB = isOdd ? c.uHarmAmps[1][uIdx] : 0.0;
+          const uC = isOdd ? c.uHarmAmps[2][uIdx] : 0.0;
+          const uAvg = (uA + uB + uC) / 3.0;
+          const u1Avg = (c.uHarmAmps[0][0] + c.uHarmAmps[1][0] + c.uHarmAmps[2][0]) / 3.0;
+          const uPctAvg = (uAvg / Math.max(1.0, u1Avg)) * 100.0;
+
+          const rowDimClass = isOdd ? '' : 'opacity-35';
+          const tr = tbodyH.children[k];
+          tr.className = `${rowDimClass} hover:bg-[#0D2444]/60 transition-colors`;
+          const cells = tr.children;
+
+          cells[0].className = 'py-0.5 px-1 font-bold text-cyan-300 text-[10px] text-left';
+          cells[0].textContent = `${ord}${suffix}`;
+
+          cells[1].className = 'px-1 text-[10px] text-[#8FAECB] text-left';
+          cells[1].textContent = `${freq.toFixed(0)} Hz`;
+
+          cells[2].className = 'px-1 text-amber-300 font-bold text-[10px] text-left';
+          cells[2].innerHTML = `${iA.toFixed(2)} A <span class="text-amber-400/70 text-[9px]">(${pctA.toFixed(0)}%)</span>`;
+
+          cells[3].className = 'px-1 text-emerald-300 font-bold text-[10px] text-left';
+          cells[3].innerHTML = `${iB.toFixed(2)} A <span class="text-emerald-400/70 text-[9px]">(${pctB.toFixed(0)}%)</span>`;
+
+          cells[4].className = 'px-1 text-rose-300 font-bold text-[10px] text-left';
+          cells[4].innerHTML = `${iC.toFixed(2)} A <span class="text-rose-400/70 text-[9px]">(${pctC.toFixed(0)}%)</span>`;
+
+          cells[5].className = 'px-1 text-[#FFD700] font-bold text-[10px] text-left';
+          cells[5].innerHTML = `${uAvg.toFixed(1)} V <span class="text-[#FFD700]/70 text-[9px]">(${uPctAvg.toFixed(1)}%)</span>`;
+        }
+      } else {
+        const p = state.phases[pIdx];
+        const uAmps = c.uHarmAmps[pIdx];
+        const u1 = Math.max(1.0, uAmps[0]);
+
+        for (let k = 0; k < orders.length; k++) {
+          const ord = orders[k];
+          const freq = ord * state.grid.fBase;
+          const suffix = isRu 
+            ? '-я' 
+            : (ord === 1 ? 'st' : (ord === 2 ? 'nd' : (ord === 3 ? 'rd' : 'th')));
+          const isOdd = oddIdxMap[ord] !== undefined;
+          const uIdx = isOdd ? oddIdxMap[ord] : -1;
+
+          const pct = isOdd ? ((ord === 1) ? 100.0 : (p['h' + ord] || 0.0)) : 0.0;
+          const iHarm = (p.i1 * pct) / 100.0;
+          const uHarm = isOdd ? uAmps[uIdx] : 0.0;
+          const uPct = (uHarm / u1) * 100.0;
+
+          const rowDimClass = isOdd ? '' : 'opacity-35';
+          const tr = tbodyH.children[k];
+          tr.className = `${rowDimClass} hover:bg-[#0D2444]/60 transition-colors`;
+          const cells = tr.children;
+
+          cells[0].className = 'py-0.5 px-1 font-bold text-cyan-300 text-[10px] text-left';
+          cells[0].textContent = `${ord}${suffix}`;
+
+          cells[1].className = 'px-1 text-[10px] text-[#8FAECB] text-left';
+          cells[1].textContent = `${freq.toFixed(0)} Hz`;
+
+          cells[2].className = 'px-1 text-white font-bold text-[10px] text-left';
+          cells[2].textContent = `${iHarm.toFixed(2)} A`;
+
+          cells[3].className = 'px-1 text-cyan-400 text-[10px] text-right';
+          cells[3].textContent = `${pct.toFixed(0)}%`;
+
+          cells[4].className = 'px-1 text-[#FFD700] font-bold text-[10px] text-right';
+          cells[4].textContent = `${uHarm.toFixed(1)} V`;
+
+          cells[5].className = 'px-1 text-[#FFD700] text-[10px] text-right';
+          cells[5].textContent = `${uPct.toFixed(1)}%`;
+        }
+      }
+    }
+
+    function updatePhaseBreakdownTable() {
+      const tbodyP = document.getElementById('tbody-phase-breakdown');
+      if (!tbodyP) return;
+
+      const isRu = state.lang === 'ru';
+      const c = state.calc;
+      const pNames = isRu 
+        ? ['Фаза A', 'Фаза B', 'Фаза C'] 
+        : ['Phase A', 'Phase B', 'Phase C'];
+      const pColors = ['text-amber-400', 'text-emerald-400', 'text-rose-400'];
+
+      if (tbodyP.children.length !== 3) {
+        let initHtml = '';
+        for (let k = 0; k < 3; k++) {
+          initHtml += `<tr>
+            <td class="py-1 px-1 font-bold ${pColors[k]} text-left"></td>
+            <td class="text-white text-right px-1"></td>
+            <td class="text-white font-bold text-right px-1"></td>
+            <td class="text-emerald-400 text-right px-1"></td>
+            <td class="text-amber-400 text-right px-1"></td>
+            <td class="text-purple-400 text-right px-1"></td>
+            <td class="text-cyan-400 font-bold text-right px-1"></td>
+            <td class="text-white text-right px-1"></td>
+            <td class="text-cyan-300 font-bold text-right px-1"></td>
+            <td class="text-amber-300 font-bold text-right px-1"></td>
+            <td class="text-white text-right px-1"></td>
+          </tr>`;
+        }
+        tbodyP.innerHTML = initHtml;
+      }
+
+      for (let k = 0; k < 3; k++) {
+        const tr = tbodyP.children[k];
+        const cells = tr.children;
+        cells[0].textContent = pNames[k];
+        cells[1].textContent = `${c.uRms[k].toFixed(1)} V`;
+        cells[2].textContent = `${c.iRms[k].toFixed(1)} A`;
+        cells[3].textContent = (c.p[k] / 1000).toFixed(2);
+        cells[4].textContent = (c.q1[k] / 1000).toFixed(2);
+        cells[5].textContent = (c.d[k] / 1000).toFixed(2);
+        cells[6].textContent = (c.s[k] / 1000).toFixed(2);
+        cells[7].textContent = c.cosPhi1[k].toFixed(3);
+        cells[8].textContent = c.pf[k].toFixed(3);
+        cells[9].textContent = `${c.thdU[k].toFixed(1)}%`;
+        cells[10].textContent = `${c.thdI[k].toFixed(1)}%`;
+      }
+    }
+
+    function updateDynamicSimUI() {
+      const simTimeEl = document.getElementById('lbl-simtime');
+      if (simTimeEl) simTimeEl.textContent = `${state.simTime.toFixed(3)} s`;
+      const wpStr = state.energy.wp.toFixed(3);
+      const wqStr = state.energy.wq.toFixed(3);
+      const wsStr = state.energy.ws.toFixed(3);
+
+      const valHdrWp = document.getElementById('val-hdr-wp');
+      const valHdrWq = document.getElementById('val-hdr-wq');
+      const valHdrWs = document.getElementById('val-hdr-ws');
+      if (valHdrWp) valHdrWp.textContent = wpStr;
+      if (valHdrWq) valHdrWq.textContent = wqStr;
+      if (valHdrWs) valHdrWs.textContent = wsStr;
+
+      const diagWp = document.getElementById('diag-wp');
+      const diagWq = document.getElementById('diag-wq');
+      const diagWs = document.getElementById('diag-ws');
+      if (diagWp) diagWp.textContent = `${wpStr} kWh`;
+      if (diagWq) diagWq.textContent = `${wqStr} kvarh`;
+      if (diagWs) diagWs.textContent = `${wsStr} kVAh`;
     }
 
     function updateNatureBadge(phi) {
@@ -4861,6 +4995,9 @@
           });
           document.getElementById(targetId).classList.remove('hidden');
           state.activeTab = targetId;
+          state.needsTableUpdate = true;
+          state.needsUIUpdate = true;
+          updateDashboardUI();
         });
       });
 
@@ -5045,6 +5182,8 @@
             c.classList.toggle('text-[#8FAECB]', !isActive);
           });
           state.phasor.measurePhase = parseInt(chip.dataset.phase);
+          const canvas = document.getElementById('canvas-phasor');
+          if (canvas) renderPhasorDiagram(canvas);
         });
       });
 
@@ -5059,6 +5198,8 @@
             c.classList.toggle('text-[#8FAECB]', !isActive);
           });
           state.powerGeom.scope = chip.dataset.scope;
+          state.needsUIUpdate = true;
+          updateDashboardUI();
         });
       });
 
@@ -5401,6 +5542,8 @@
         state.energy.wp += (state.calc.pTot * dtSim) / 3600000.0;
         state.energy.wq += (Math.abs(state.calc.qTot) * dtSim) / 3600000.0;
         state.energy.ws += (state.calc.sTot * dtSim) / 3600000.0;
+
+        updateDynamicSimUI();
       }
 
       frameCount++;
@@ -5411,7 +5554,10 @@
         lastFpsUpdate = now;
       }
 
-      updateDashboardUI();
+      if (state.needsUIUpdate) {
+        state.needsUIUpdate = false;
+        updateDashboardUI();
+      }
 
       if (state.activeTab === 'tab-oscilloscope') {
         const canvas = document.getElementById('canvas-oscilloscope');
@@ -5438,6 +5584,7 @@
       updateToggleIndicators();
       setupTooltips();
       recomputePowerAnalytics();
+      updateDashboardUI();
       requestAnimationFrame(mainSimulationLoop);
     });
   </script>
