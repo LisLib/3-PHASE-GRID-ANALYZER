@@ -519,6 +519,15 @@
             </div>
 
             <div class="grid grid-cols-2 gap-x-2.5 gap-y-1 text-[11px]">
+              <!-- Row 1: 2nd & 3rd -->
+              <div>
+                <div class="flex justify-between">
+                  <span class="text-emerald-300" id="lbl-h2">2-я (100 Гц):</span>
+                  <span id="val-h2" class="text-white font-bold">0%</span>
+                </div>
+                <input id="slider-h2" type="range" min="0" max="100" step="1" value="0" class="w-full">
+              </div>
+
               <div>
                 <div class="flex justify-between">
                   <span class="text-purple-300" id="lbl-h3">3-я (150 Гц):</span>
@@ -527,12 +536,30 @@
                 <input id="slider-h3" type="range" min="0" max="100" step="1" value="0" class="w-full">
               </div>
 
+              <!-- Row 2: 4th & 5th -->
+              <div>
+                <div class="flex justify-between">
+                  <span class="text-teal-300" id="lbl-h4">4-я (200 Гц):</span>
+                  <span id="val-h4" class="text-white font-bold">0%</span>
+                </div>
+                <input id="slider-h4" type="range" min="0" max="100" step="1" value="0" class="w-full">
+              </div>
+
               <div>
                 <div class="flex justify-between">
                   <span class="text-cyan-300" id="lbl-h5">5-я (250 Гц):</span>
                   <span id="val-h5" class="text-white font-bold">0%</span>
                 </div>
-                <input id="slider-h5" type="range" min="0" max="70" step="1" value="0" class="w-full">
+                <input id="slider-h5" type="range" min="0" max="100" step="1" value="0" class="w-full">
+              </div>
+
+              <!-- Row 3: 6th & 7th -->
+              <div>
+                <div class="flex justify-between">
+                  <span class="text-sky-300" id="lbl-h6">6-я (300 Гц):</span>
+                  <span id="val-h6" class="text-white font-bold">0%</span>
+                </div>
+                <input id="slider-h6" type="range" min="0" max="100" step="1" value="0" class="w-full">
               </div>
 
               <div>
@@ -540,7 +567,16 @@
                   <span class="text-blue-300" id="lbl-h7">7-я (350 Гц):</span>
                   <span id="val-h7" class="text-white font-bold">0%</span>
                 </div>
-                <input id="slider-h7" type="range" min="0" max="50" step="1" value="0" class="w-full">
+                <input id="slider-h7" type="range" min="0" max="100" step="1" value="0" class="w-full">
+              </div>
+
+              <!-- Row 4: 8th & 9th -->
+              <div>
+                <div class="flex justify-between">
+                  <span class="text-violet-300" id="lbl-h8">8-я (400 Гц):</span>
+                  <span id="val-h8" class="text-white font-bold">0%</span>
+                </div>
+                <input id="slider-h8" type="range" min="0" max="100" step="1" value="0" class="w-full">
               </div>
 
               <div>
@@ -548,15 +584,24 @@
                   <span class="text-indigo-300" id="lbl-h9">9-я (450 Гц):</span>
                   <span id="val-h9" class="text-white font-bold">0%</span>
                 </div>
-                <input id="slider-h9" type="range" min="0" max="40" step="1" value="0" class="w-full">
+                <input id="slider-h9" type="range" min="0" max="100" step="1" value="0" class="w-full">
               </div>
 
-              <div class="col-span-2">
+              <!-- Row 5: 10th & 11th -->
+              <div>
                 <div class="flex justify-between">
-                  <span class="text-teal-300" id="lbl-h11">11-я (550 Гц):</span>
+                  <span class="text-fuchsia-300" id="lbl-h10">10-я (500 Гц):</span>
+                  <span id="val-h10" class="text-white font-bold">0%</span>
+                </div>
+                <input id="slider-h10" type="range" min="0" max="100" step="1" value="0" class="w-full">
+              </div>
+
+              <div>
+                <div class="flex justify-between">
+                  <span class="text-rose-300" id="lbl-h11">11-я (550 Гц):</span>
                   <span id="val-h11" class="text-white font-bold">0%</span>
                 </div>
-                <input id="slider-h11" type="range" min="0" max="30" step="1" value="0" class="w-full">
+                <input id="slider-h11" type="range" min="0" max="100" step="1" value="0" class="w-full">
               </div>
             </div>
           </div>
@@ -621,6 +666,64 @@
                 <button class="p-trace-chip px-1.5 py-0.5 rounded text-[#8FAECB] hover:text-white" data-trace="A">A</button>
                 <button class="p-trace-chip px-1.5 py-0.5 rounded text-[#8FAECB] hover:text-white" data-trace="B">B</button>
                 <button class="p-trace-chip px-1.5 py-0.5 rounded text-[#8FAECB] hover:text-white" data-trace="C">C</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Oscilloscope Audio Synthesizer & Stereo Matrix Routing -->
+          <div class="shrink-0 flex flex-wrap items-center justify-between gap-1.5 p-1.5 bg-[#081628] rounded-lg border border-[#183863] text-xs font-mono" id="scope-audio-bar">
+            <div class="flex flex-wrap items-center gap-2">
+              <!-- Audio On/Off Button -->
+              <button id="btn-audio-toggle" class="quick-chip py-0.5 px-2.5 text-[11px] font-bold flex items-center gap-1.5 transition-all text-[#8FAECB]" onclick="toggleAudioSynth()">
+                <span id="icon-audio">🔇</span>
+                <span id="txt-audio-toggle">ЗВУК: ВЫКЛ</span>
+              </button>
+
+              <!-- Signal Source: I / U -->
+              <div class="flex items-center gap-1 bg-[#0A1B32] p-0.5 rounded border border-[#235188] text-[10px]">
+                <span class="text-[#8FAECB] px-1 font-bold" id="lbl-audio-src">Сигнал:</span>
+                <button id="btn-audio-src-i" class="quick-chip active py-0.5 px-2 text-amber-300 font-bold" onclick="setAudioSource('I')">Ток I</button>
+                <button id="btn-audio-src-u" class="quick-chip py-0.5 px-2 text-cyan-300" onclick="setAudioSource('U')">Напряжение U</button>
+              </div>
+
+              <!-- Master Volume Slider -->
+              <div class="flex items-center gap-1.5 bg-[#0A1B32] px-2 py-0.5 rounded border border-[#183863] text-[10px]">
+                <span class="text-[#8FAECB]" id="lbl-audio-vol">Громкость:</span>
+                <input id="slider-audio-vol" type="range" min="0" max="100" step="1" value="30" class="w-16 h-1 accent-cyan-400 cursor-pointer">
+                <span id="val-audio-vol" class="text-cyan-300 font-bold min-w-[28px] text-right">30%</span>
+              </div>
+            </div>
+
+            <!-- Stereo Routing Matrix: Phase A, B, C, N -> L, R -->
+            <div class="flex flex-wrap items-center gap-2 text-[10px]">
+              <span class="text-[#8FAECB] font-bold" id="lbl-audio-routing">Стерео (L / R):</span>
+
+              <!-- Phase A -->
+              <div class="flex items-center gap-0.5 bg-[#0A1B32] px-1.5 py-0.5 rounded border border-amber-500/40">
+                <span class="text-amber-400 font-bold mr-1">A:</span>
+                <button id="btn-audio-a-l" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#0D2444] text-cyan-300 border border-cyan-400" onclick="toggleAudioRoute('A', 'L')">L</button>
+                <button id="btn-audio-a-r" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#060F1D] text-[#8FAECB] border border-[#183863]" onclick="toggleAudioRoute('A', 'R')">R</button>
+              </div>
+
+              <!-- Phase B -->
+              <div class="flex items-center gap-0.5 bg-[#0A1B32] px-1.5 py-0.5 rounded border border-emerald-500/40">
+                <span class="text-emerald-400 font-bold mr-1">B:</span>
+                <button id="btn-audio-b-l" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#0D2444] text-cyan-300 border border-cyan-400" onclick="toggleAudioRoute('B', 'L')">L</button>
+                <button id="btn-audio-b-r" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#0D2444] text-cyan-300 border border-cyan-400" onclick="toggleAudioRoute('B', 'R')">R</button>
+              </div>
+
+              <!-- Phase C -->
+              <div class="flex items-center gap-0.5 bg-[#0A1B32] px-1.5 py-0.5 rounded border border-rose-500/40">
+                <span class="text-rose-400 font-bold mr-1">C:</span>
+                <button id="btn-audio-c-l" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#060F1D] text-[#8FAECB] border border-[#183863]" onclick="toggleAudioRoute('C', 'L')">L</button>
+                <button id="btn-audio-c-r" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#0D2444] text-cyan-300 border border-cyan-400" onclick="toggleAudioRoute('C', 'R')">R</button>
+              </div>
+
+              <!-- Neutral N -->
+              <div class="flex items-center gap-0.5 bg-[#0A1B32] px-1.5 py-0.5 rounded border border-cyan-500/40">
+                <span class="text-cyan-400 font-bold mr-1">N:</span>
+                <button id="btn-audio-n-l" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#060F1D] text-[#8FAECB] border border-[#183863]" onclick="toggleAudioRoute('N', 'L')">L</button>
+                <button id="btn-audio-n-r" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#060F1D] text-[#8FAECB] border border-[#183863]" onclick="toggleAudioRoute('N', 'R')">R</button>
               </div>
             </div>
           </div>
@@ -1232,11 +1335,23 @@
         harmSmps: "ИБП",
         harmVfd: "ЧРП",
         harmZero: "0%",
+        h2Lbl: "2-я (100 Гц):",
         h3Lbl: "3-я (150 Гц):",
+        h4Lbl: "4-я (200 Гц):",
         h5Lbl: "5-я (250 Гц):",
+        h6Lbl: "6-я (300 Гц):",
         h7Lbl: "7-я (350 Гц):",
+        h8Lbl: "8-я (400 Гц):",
         h9Lbl: "9-я (450 Гц):",
+        h10Lbl: "10-я (500 Гц):",
         h11Lbl: "11-я (550 Гц):",
+        audioToggleOff: "ЗВУК: ВЫКЛ",
+        audioToggleOn: "ЗВУК: ВКЛ",
+        audioSrcLbl: "Сигнал:",
+        audioSrcI: "Ток I",
+        audioSrcU: "Напряжение U",
+        audioVolLbl: "Громкость:",
+        audioRoutingLbl: "Стерео (L / R):",
         flowHdr: "4. Индикатор потоков мощности (СЕТЬ ⇄ НАГРУЗКА)",
         cardGrid: "СЕТЬ",
         cardLoad: "НАГРУЗКА",
@@ -1383,11 +1498,23 @@
         harmSmps: "SMPS",
         harmVfd: "VFD",
         harmZero: "0%",
+        h2Lbl: "2nd (100 Hz):",
         h3Lbl: "3rd (150 Hz):",
+        h4Lbl: "4th (200 Hz):",
         h5Lbl: "5th (250 Hz):",
+        h6Lbl: "6th (300 Hz):",
         h7Lbl: "7th (350 Hz):",
+        h8Lbl: "8th (400 Hz):",
         h9Lbl: "9th (450 Hz):",
+        h10Lbl: "10th (500 Hz):",
         h11Lbl: "11th (550 Hz):",
+        audioToggleOff: "AUDIO: OFF",
+        audioToggleOn: "AUDIO: ON",
+        audioSrcLbl: "Signal:",
+        audioSrcI: "Current I",
+        audioSrcU: "Voltage U",
+        audioVolLbl: "Volume:",
+        audioRoutingLbl: "Stereo (L / R):",
         flowHdr: "4. Power Flow Indicator (GRID ⇄ LOAD)",
         cardGrid: "GRID",
         cardLoad: "LOAD",
@@ -1515,9 +1642,9 @@
           enabled: true,
           linkPhases: true,
           phases: [
-            { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
-            { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
-            { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 }
+            { i1: 15.0, phi1: 0.0, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 },
+            { i1: 15.0, phi1: 0.0, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 },
+            { i1: 15.0, phi1: 0.0, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 }
           ]
         }
       ],
@@ -1535,10 +1662,22 @@
 
       // Equivalent Aggregate Per-Phase Load (calculated by superposition of active loads)
       phases: [
-        { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
-        { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
-        { i1: 15.0, phi1: 0.0, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 }
+        { i1: 15.0, phi1: 0.0, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 },
+        { i1: 15.0, phi1: 0.0, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 },
+        { i1: 15.0, phi1: 0.0, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 }
       ],
+
+      audio: {
+        enabled: false,
+        source: 'I',
+        volume: 0.3,
+        routing: {
+          A: { left: true, right: false },
+          B: { left: true, right: true },
+          C: { left: false, right: true },
+          N: { left: false, right: false }
+        }
+      },
 
       scope: {
         showUA: true, showIA: true,
@@ -1608,9 +1747,9 @@
         thdI: [0, 0, 0],
         thdU: [0, 0, 0],
         uHarmAmps: [
-          [230, 0, 0, 0, 0, 0],
-          [230, 0, 0, 0, 0, 0],
-          [230, 0, 0, 0, 0, 0]
+          [230, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [230, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [230, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ],
         pTot: 10350,
         qTot: 0,
@@ -1636,6 +1775,13 @@
       needsTableUpdate: true,
       needsUIUpdate: true
     };
+    window.state = state;
+
+    function setPhaseParams(p, i1, phi1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11) {
+      p.i1 = i1; p.phi1 = phi1;
+      p.h2 = h2 || 0; p.h3 = h3 || 0; p.h4 = h4 || 0; p.h5 = h5 || 0; p.h6 = h6 || 0;
+      p.h7 = h7 || 0; p.h8 = h8 || 0; p.h9 = h9 || 0; p.h10 = h10 || 0; p.h11 = h11 || 0;
+    }
 
     const PRESETS = [
       {
@@ -1643,10 +1789,7 @@
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          for (let p of s.phases) {
-            p.i1 = 20.0; p.phi1 = 0.0;
-            p.h3 = 0; p.h5 = 0; p.h7 = 0; p.h9 = 0; p.h11 = 0;
-          }
+          for (let p of s.phases) setPhaseParams(p, 20.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
       },
       {
@@ -1654,10 +1797,7 @@
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          for (let p of s.phases) {
-            p.i1 = 25.0; p.phi1 = 38.7;
-            p.h3 = 2.0; p.h5 = 4.0; p.h7 = 2.0; p.h9 = 0; p.h11 = 0;
-          }
+          for (let p of s.phases) setPhaseParams(p, 25.0, 38.7, 0, 2.0, 0, 4.0, 0, 2.0, 0, 0, 0, 0);
         }
       },
       {
@@ -1665,10 +1805,7 @@
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          for (let p of s.phases) {
-            p.i1 = 22.0; p.phi1 = -40.5;
-            p.h3 = 0; p.h5 = 6.0; p.h7 = 3.0; p.h9 = 0; p.h11 = 0;
-          }
+          for (let p of s.phases) setPhaseParams(p, 22.0, -40.5, 0, 0, 0, 6.0, 0, 3.0, 0, 0, 0, 0);
         }
       },
       {
@@ -1676,10 +1813,7 @@
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          for (let p of s.phases) {
-            p.i1 = 18.0; p.phi1 = 8.0;
-            p.h3 = 65.0; p.h5 = 25.0; p.h7 = 12.0; p.h9 = 8.0; p.h11 = 4.0;
-          }
+          for (let p of s.phases) setPhaseParams(p, 18.0, 8.0, 0, 65.0, 0, 25.0, 0, 12.0, 0, 8.0, 0, 4.0);
         }
       },
       {
@@ -1687,10 +1821,7 @@
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          for (let p of s.phases) {
-            p.i1 = 28.0; p.phi1 = 22.0;
-            p.h3 = 0.0; p.h5 = 25.0; p.h7 = 16.0; p.h9 = 0.0; p.h11 = 8.0;
-          }
+          for (let p of s.phases) setPhaseParams(p, 28.0, 22.0, 0, 0.0, 0, 25.0, 0, 16.0, 0, 0.0, 0, 8.0);
         }
       },
       {
@@ -1698,9 +1829,9 @@
           s.linkPhases = false;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          s.phases[0] = { i1: 38.0, phi1: 5.0, h3: 15, h5: 5, h7: 0, h9: 0, h11: 0 };
-          s.phases[1] = { i1: 8.0, phi1: 15.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[2] = { i1: 4.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
+          setPhaseParams(s.phases[0], 38.0, 5.0, 0, 15, 0, 5, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[1], 8.0, 15.0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[2], 4.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
       },
       {
@@ -1708,9 +1839,9 @@
           s.linkPhases = false;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          s.phases[0] = { i1: 20.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[1] = { i1: 20.0, phi1: 45.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[2] = { i1: 20.0, phi1: -45.0, h3: 0, h5: 5, h7: 0, h9: 0, h11: 0 };
+          setPhaseParams(s.phases[0], 20.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[1], 20.0, 45.0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[2], 20.0, -45.0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0);
         }
       },
       {
@@ -1718,10 +1849,7 @@
           s.linkPhases = true;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          for (let p of s.phases) {
-            p.i1 = 30.0; p.phi1 = 31.8;
-            p.h3 = 30.0; p.h5 = 15.0; p.h7 = 8.0; p.h9 = 3.0; p.h11 = 2.0;
-          }
+          for (let p of s.phases) setPhaseParams(p, 30.0, 31.8, 0, 30.0, 0, 15.0, 0, 8.0, 0, 3.0, 0, 2.0);
         }
       },
       {
@@ -1730,9 +1858,9 @@
           s.grid.unbalanceEnabled = true;
           s.grid.devU = [0, -35, 0];
           s.grid.devTheta = [0, -8, 0];
-          s.phases[0] = { i1: 24.0, phi1: 10.0, h3: 10, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[1] = { i1: 15.0, phi1: 25.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[2] = { i1: 0.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
+          setPhaseParams(s.phases[0], 24.0, 10.0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[1], 15.0, 25.0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[2], 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
       },
       {
@@ -1740,9 +1868,9 @@
           s.linkPhases = false;
           s.grid.unbalanceEnabled = false;
           s.grid.devU = [0, 0, 0]; s.grid.devTheta = [0, 0, 0];
-          s.phases[0] = { i1: 22.0, phi1: 45.0, h3: 5, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[1] = { i1: 16.0, phi1: 0.0, h3: 0, h5: 0, h7: 0, h9: 0, h11: 0 };
-          s.phases[2] = { i1: 20.0, phi1: -32.0, h3: 4, h5: 0, h7: 0, h9: 0, h11: 0 };
+          setPhaseParams(s.phases[0], 22.0, 45.0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[1], 16.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          setPhaseParams(s.phases[2], 20.0, -32.0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0);
         }
       }
     ];
@@ -1782,6 +1910,323 @@
     const OP_A = Complex.fromPolar(1.0, (2 * Math.PI) / 3);
     const OP_A2 = Complex.fromPolar(1.0, (4 * Math.PI) / 3);
 
+    // --- Oscilloscope Audio Synthesizer (Web Audio API) with Anti-Clipping DSP Smoothing ---
+    let audioCtx = null;
+    let audioProcessor = null;
+    let audioGenPhase = 0.0;
+
+    // Smoothed state parameters for seamless, click-free, pop-free crossfading between transitions
+    const audioSmoothed = {
+      powerEnv: 0.0,
+      volume: 0.3,
+      srcMix: 0.0,
+      routing: {
+        A: { left: 1.0, right: 0.0 },
+        B: { left: 1.0, right: 1.0 },
+        C: { left: 0.0, right: 1.0 },
+        N: { left: 0.0, right: 0.0 }
+      },
+      phases: [
+        { i1: 15.0, phi1: 0.0, u1: 230.0, uAngle: 0.0, devTheta: 0.0, harmI: new Float32Array(12), harmU: new Float32Array(12) },
+        { i1: 15.0, phi1: 0.0, u1: 230.0, uAngle: -2.0943951, devTheta: 0.0, harmI: new Float32Array(12), harmU: new Float32Array(12) },
+        { i1: 15.0, phi1: 0.0, u1: 230.0, uAngle: 2.0943951, devTheta: 0.0, harmI: new Float32Array(12), harmU: new Float32Array(12) }
+      ]
+    };
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return false;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (!audioProcessor && audioCtx) {
+        // ScriptProcessor with 2048 buffer size, 0 inputs, 2 outputs (Stereo L/R)
+        audioProcessor = audioCtx.createScriptProcessor(2048, 0, 2);
+        window.audioProcessor = audioProcessor;
+        audioProcessor.onaudioprocess = function(e) {
+          const outL = e.outputBuffer.getChannelData(0);
+          const outR = e.outputBuffer.getChannelData(1);
+
+          const sampleRate = audioCtx.sampleRate || 44100;
+          const dt = 1.0 / sampleRate;
+          const omega = 2.0 * Math.PI * (state.grid ? state.grid.fBase : 50.0);
+          const thetaBase = [0.0, -2.0943951023931953, 2.0943951023931953]; // 0, -120 deg, +120 deg
+
+          const targetPower = (state.audio && state.audio.enabled) ? 1.0 : 0.0;
+          const isOff = (targetPower === 0.0 && audioSmoothed.powerEnv < 0.0001);
+
+          if (isOff) {
+            outL.fill(0);
+            outR.fill(0);
+            return;
+          }
+
+          const targetVolume = (state.audio && state.audio.volume !== undefined) ? state.audio.volume : 0.3;
+          const targetSrcMix = (state.audio && state.audio.source === 'U') ? 1.0 : 0.0;
+
+          const targetRoute = {
+            A: {
+              left: (state.audio && state.audio.routing && state.audio.routing.A && state.audio.routing.A.left) ? 1.0 : 0.0,
+              right: (state.audio && state.audio.routing && state.audio.routing.A && state.audio.routing.A.right) ? 1.0 : 0.0
+            },
+            B: {
+              left: (state.audio && state.audio.routing && state.audio.routing.B && state.audio.routing.B.left) ? 1.0 : 0.0,
+              right: (state.audio && state.audio.routing && state.audio.routing.B && state.audio.routing.B.right) ? 1.0 : 0.0
+            },
+            C: {
+              left: (state.audio && state.audio.routing && state.audio.routing.C && state.audio.routing.C.left) ? 1.0 : 0.0,
+              right: (state.audio && state.audio.routing && state.audio.routing.C && state.audio.routing.C.right) ? 1.0 : 0.0
+            },
+            N: {
+              left: (state.audio && state.audio.routing && state.audio.routing.N && state.audio.routing.N.left) ? 1.0 : 0.0,
+              right: (state.audio && state.audio.routing && state.audio.routing.N && state.audio.routing.N.right) ? 1.0 : 0.0
+            }
+          };
+
+          const targetPhases = [];
+          for (let k = 0; k < 3; k++) {
+            const p = state.phases ? state.phases[k] : null;
+            const i1 = p ? p.i1 : 0.0;
+            const phi1 = p ? (p.phi1 * Math.PI / 180.0) : 0.0;
+            const u1 = (state.calc && state.calc.u1Rms && state.calc.u1Rms[k] !== undefined) ? state.calc.u1Rms[k] : (state.grid ? state.grid.uBase : 230.0);
+            const uAng = (state.calc && state.calc.uPhasors && state.calc.uPhasors[k]) ? state.calc.uPhasors[k].angle() : thetaBase[k];
+            const devTh = (state.grid && state.grid.unbalanceEnabled && state.grid.devTheta) ? (state.grid.devTheta[k] * Math.PI / 180.0) : 0.0;
+
+            const harmI = new Float32Array(12);
+            const harmU = new Float32Array(12);
+            for (let h = 2; h <= 11; h++) {
+              const pct = p ? (p['h' + h] || 0) : 0;
+              harmI[h] = i1 * (pct / 100.0);
+              harmU[h] = (state.calc && state.calc.uHarmAmps && state.calc.uHarmAmps[k]) ? (state.calc.uHarmAmps[k][h - 1] || 0) : 0;
+            }
+
+            targetPhases.push({ i1, phi1, u1, uAngle: uAng, devTheta: devTh, harmI, harmU });
+          }
+
+          // Sub-block processing (32 samples = ~0.7ms per block for seamless interpolation)
+          const subBlockSize = 32;
+          const subBlocks = Math.floor(outL.length / subBlockSize);
+          const subDt = subBlockSize * dt;
+          // Time constant tau = 0.030s (30ms smooth crossfade for zero clicks)
+          const alpha = 1.0 - Math.exp(-subDt / 0.030);
+
+          const normI = 45.0;
+          const normU = Math.max(50.0, (state.grid ? state.grid.uBase : 230.0) * Math.SQRT2);
+
+          let sIdx = 0;
+          for (let b = 0; b < subBlocks; b++) {
+            // Smooth global controls
+            audioSmoothed.powerEnv += alpha * (targetPower - audioSmoothed.powerEnv);
+            audioSmoothed.volume += alpha * (targetVolume - audioSmoothed.volume);
+            audioSmoothed.srcMix += alpha * (targetSrcMix - audioSmoothed.srcMix);
+
+            // Smooth routing
+            const rSmooth = audioSmoothed.routing;
+            ['A', 'B', 'C', 'N'].forEach(ch => {
+              rSmooth[ch].left += alpha * (targetRoute[ch].left - rSmooth[ch].left);
+              rSmooth[ch].right += alpha * (targetRoute[ch].right - rSmooth[ch].right);
+            });
+
+            // Smooth each phase
+            for (let k = 0; k < 3; k++) {
+              const ps = audioSmoothed.phases[k];
+              const pt = targetPhases[k];
+
+              ps.i1 += alpha * (pt.i1 - ps.i1);
+              ps.phi1 += alpha * (pt.phi1 - ps.phi1);
+              ps.u1 += alpha * (pt.u1 - ps.u1);
+              ps.uAngle += alpha * (pt.uAngle - ps.uAngle);
+              ps.devTheta += alpha * (pt.devTheta - ps.devTheta);
+
+              for (let h = 2; h <= 11; h++) {
+                ps.harmI[h] += alpha * (pt.harmI[h] - ps.harmI[h]);
+                ps.harmU[h] += alpha * (pt.harmU[h] - ps.harmU[h]);
+              }
+            }
+
+            if (audioSmoothed.powerEnv < 0.0001 && targetPower === 0.0) {
+              for (let i = 0; i < subBlockSize; i++) {
+                outL[sIdx + i] = 0.0;
+                outR[sIdx + i] = 0.0;
+              }
+              sIdx += subBlockSize;
+              continue;
+            }
+
+            const pA = audioSmoothed.phases[0];
+            const pB = audioSmoothed.phases[1];
+            const pC = audioSmoothed.phases[2];
+            const sm = audioSmoothed.srcMix;
+            const gain = audioSmoothed.volume * audioSmoothed.powerEnv * 0.55;
+
+            for (let i = 0; i < subBlockSize; i++) {
+              audioGenPhase += omega * dt;
+              if (audioGenPhase >= 6.283185307179586) audioGenPhase -= 6.283185307179586;
+
+              // Phase A
+              const thA_I = audioGenPhase + thetaBase[0] + pA.devTheta - pA.phi1;
+              const thA_U = audioGenPhase + pA.uAngle;
+              let currA = Math.SQRT2 * pA.i1 * Math.sin(thA_I);
+              let voltA = Math.SQRT2 * pA.u1 * Math.sin(thA_U);
+              for (let h = 2; h <= 11; h++) {
+                if (pA.harmI[h] > 0.01) currA += Math.SQRT2 * pA.harmI[h] * Math.sin(h * thA_I);
+                if (pA.harmU[h] > 0.01) voltA += Math.SQRT2 * pA.harmU[h] * Math.sin(h * thA_U);
+              }
+
+              // Phase B
+              const thB_I = audioGenPhase + thetaBase[1] + pB.devTheta - pB.phi1;
+              const thB_U = audioGenPhase + pB.uAngle;
+              let currB = Math.SQRT2 * pB.i1 * Math.sin(thB_I);
+              let voltB = Math.SQRT2 * pB.u1 * Math.sin(thB_U);
+              for (let h = 2; h <= 11; h++) {
+                if (pB.harmI[h] > 0.01) currB += Math.SQRT2 * pB.harmI[h] * Math.sin(h * thB_I);
+                if (pB.harmU[h] > 0.01) voltB += Math.SQRT2 * pB.harmU[h] * Math.sin(h * thB_U);
+              }
+
+              // Phase C
+              const thC_I = audioGenPhase + thetaBase[2] + pC.devTheta - pC.phi1;
+              const thC_U = audioGenPhase + pC.uAngle;
+              let currC = Math.SQRT2 * pC.i1 * Math.sin(thC_I);
+              let voltC = Math.SQRT2 * pC.u1 * Math.sin(thC_U);
+              for (let h = 2; h <= 11; h++) {
+                if (pC.harmI[h] > 0.01) currC += Math.SQRT2 * pC.harmI[h] * Math.sin(h * thC_I);
+                if (pC.harmU[h] > 0.01) voltC += Math.SQRT2 * pC.harmU[h] * Math.sin(h * thC_U);
+              }
+
+              // Neutral N
+              const currN = currA + currB + currC;
+              const voltN = (voltA + voltB + voltC) / 3.0;
+
+              // Crossfade between Current and Voltage
+              const sA = (1.0 - sm) * (currA / normI) + sm * (voltA / normU);
+              const sB = (1.0 - sm) * (currB / normI) + sm * (voltB / normU);
+              const sC = (1.0 - sm) * (currC / normI) + sm * (voltC / normU);
+              const sN = (1.0 - sm) * (currN / normI) + sm * (voltN / normU);
+
+              // Channel routing
+              const left = rSmooth.A.left * sA + rSmooth.B.left * sB + rSmooth.C.left * sC + rSmooth.N.left * sN;
+              const right = rSmooth.A.right * sA + rSmooth.B.right * sB + rSmooth.C.right * sC + rSmooth.N.right * sN;
+
+              // Soft analog saturation (tanh) preventing harsh digital clipping
+              outL[sIdx + i] = Math.tanh(left * gain);
+              outR[sIdx + i] = Math.tanh(right * gain);
+            }
+
+            sIdx += subBlockSize;
+          }
+        };
+        audioProcessor.connect(audioCtx.destination);
+      }
+      return true;
+    }
+
+    window.toggleAudioSynth = function() {
+      if (!state.audio) {
+        state.audio = {
+          enabled: false,
+          source: 'I',
+          volume: 0.3,
+          routing: {
+            A: { left: true, right: false },
+            B: { left: true, right: true },
+            C: { left: false, right: true },
+            N: { left: false, right: false }
+          }
+        };
+      }
+      state.audio.enabled = !state.audio.enabled;
+      if (state.audio.enabled) {
+        initAudioContext();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+      updateAudioUI();
+    };
+
+    window.setAudioSource = function(src) {
+      if (!state.audio) return;
+      state.audio.source = src;
+      updateAudioUI();
+    };
+
+    window.setAudioVolume = function(val) {
+      if (!state.audio) return;
+      const v = Math.min(100, Math.max(0, parseFloat(val))) / 100.0;
+      state.audio.volume = v;
+      const valEl = document.getElementById('val-audio-vol');
+      if (valEl) valEl.textContent = `${Math.round(v * 100)}%`;
+    };
+
+    window.toggleAudioRoute = function(channel, lr) {
+      if (!state.audio || !state.audio.routing[channel]) return;
+      const side = (lr === 'L') ? 'left' : 'right';
+      state.audio.routing[channel][side] = !state.audio.routing[channel][side];
+      updateAudioUI();
+    };
+
+    function updateAudioUI() {
+      if (!state.audio) return;
+      const isRu = (state.lang === 'ru');
+      const btnToggle = document.getElementById('btn-audio-toggle');
+      const iconAudio = document.getElementById('icon-audio');
+      const txtToggle = document.getElementById('txt-audio-toggle');
+
+      if (btnToggle) {
+        if (state.audio.enabled) {
+          btnToggle.className = 'quick-chip active py-0.5 px-2.5 text-[11px] font-bold flex items-center gap-1.5 transition-all bg-emerald-950 text-emerald-400 border border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]';
+          if (iconAudio) iconAudio.textContent = '🔊';
+          if (txtToggle) txtToggle.textContent = isRu ? 'ЗВУК: ВКЛ' : 'AUDIO: ON';
+        } else {
+          btnToggle.className = 'quick-chip py-0.5 px-2.5 text-[11px] font-bold flex items-center gap-1.5 transition-all text-[#8FAECB] bg-[#060F1D] border border-[#183863]';
+          if (iconAudio) iconAudio.textContent = '🔇';
+          if (txtToggle) txtToggle.textContent = isRu ? 'ЗВУК: ВЫКЛ' : 'AUDIO: OFF';
+        }
+      }
+
+      // Source buttons
+      const btnSrcI = document.getElementById('btn-audio-src-i');
+      const btnSrcU = document.getElementById('btn-audio-src-u');
+      if (btnSrcI && btnSrcU) {
+        const isI = (state.audio.source === 'I');
+        btnSrcI.classList.toggle('active', isI);
+        btnSrcI.classList.toggle('bg-[#0D2444]', isI);
+        btnSrcI.classList.toggle('text-amber-300', isI);
+        btnSrcI.classList.toggle('font-bold', isI);
+
+        btnSrcU.classList.toggle('active', !isI);
+        btnSrcU.classList.toggle('bg-[#0D2444]', !isI);
+        btnSrcU.classList.toggle('text-cyan-300', !isI);
+        btnSrcU.classList.toggle('font-bold', !isI);
+      }
+
+      // Matrix Routing buttons for A, B, C, N
+      ['A', 'B', 'C', 'N'].forEach(ch => {
+        const lowerCh = ch.toLowerCase();
+        const r = state.audio.routing[ch];
+        const btnL = document.getElementById(`btn-audio-${lowerCh}-l`);
+        const btnR = document.getElementById(`btn-audio-${lowerCh}-r`);
+
+        if (btnL) {
+          if (r.left) {
+            btnL.className = 'px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#0D2444] text-cyan-300 border border-cyan-400 shadow-[0_0_6px_rgba(0,240,255,0.4)]';
+          } else {
+            btnL.className = 'px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#060F1D] text-[#8FAECB]/50 border border-[#183863] opacity-60';
+          }
+        }
+        if (btnR) {
+          if (r.right) {
+            btnR.className = 'px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#0D2444] text-cyan-300 border border-cyan-400 shadow-[0_0_6px_rgba(0,240,255,0.4)]';
+          } else {
+            btnR.className = 'px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#060F1D] text-[#8FAECB]/50 border border-[#183863] opacity-60';
+          }
+        }
+      });
+    }
+
     function getInstantaneous(t) {
       const omega = 2 * Math.PI * state.grid.fBase;
       const nominalE = state.grid.uBase;
@@ -1795,7 +2240,7 @@
 
       const u = [0, 0, 0];
       const i = [0, 0, 0];
-      const harmOrders = [3, 5, 7, 9, 11];
+      const harmOrders = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
       const activeLoads = state.loads ? state.loads.filter(l => l.enabled) : [];
 
@@ -1818,10 +2263,10 @@
               iInst += Math.SQRT2 * p.i1 * Math.sin(omega * t + eThetaK - phiRad);
               diInst_dt += Math.SQRT2 * p.i1 * omega * Math.cos(omega * t + eThetaK - phiRad);
 
-              const harmPercs = [p.h3, p.h5, p.h7, p.h9, p.h11];
+              const harmPercs = [p.h2, p.h3, p.h4, p.h5, p.h6, p.h7, p.h8, p.h9, p.h10, p.h11];
               for (let h = 0; h < harmOrders.length; h++) {
                 let ord = harmOrders[h];
-                let pct = harmPercs[h];
+                let pct = harmPercs[h] || 0;
                 if (pct > 0) {
                   let ihPeak = Math.SQRT2 * (p.i1 * pct / 100.0);
                   let hAng = ord * (omega * t + eThetaK - phiRad);
@@ -1883,7 +2328,7 @@
           const phi1DegTotal = phiRadTotal * (180.0 / Math.PI);
 
           const harmPercsTotal = {};
-          [3, 5, 7, 9, 11].forEach(ord => {
+          [2, 3, 4, 5, 6, 7, 8, 9, 10, 11].forEach(ord => {
             let reh = 0, imh = 0;
             for (let m = 0; m < activeLoads.length; m++) {
               const p = activeLoads[m].phases[k];
@@ -1903,20 +2348,30 @@
           state.phases[k] = {
             i1: i1Total,
             phi1: phi1DegTotal,
+            h2: harmPercsTotal.h2,
             h3: harmPercsTotal.h3,
+            h4: harmPercsTotal.h4,
             h5: harmPercsTotal.h5,
+            h6: harmPercsTotal.h6,
             h7: harmPercsTotal.h7,
+            h8: harmPercsTotal.h8,
             h9: harmPercsTotal.h9,
+            h10: harmPercsTotal.h10,
             h11: harmPercsTotal.h11
           };
         } else {
           state.phases[k] = {
             i1: 0.0,
             phi1: 0.0,
+            h2: 0.0,
             h3: 0.0,
+            h4: 0.0,
             h5: 0.0,
+            h6: 0.0,
             h7: 0.0,
+            h8: 0.0,
             h9: 0.0,
+            h10: 0.0,
             h11: 0.0
           };
         }
@@ -1924,7 +2379,7 @@
 
       let pTot = 0, qTot = 0, sumDsq = 0;
       const uPhasors = [], iPhasors = [];
-      const orders = [1, 3, 5, 7, 9, 11];
+      const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
       for (let k = 0; k < 3; k++) {
         let uDev = state.grid.unbalanceEnabled ? (state.grid.devU[k] / 100.0) : 0.0;
@@ -1936,7 +2391,7 @@
         let i1 = p.i1;
         state.calc.i1Rms[k] = i1;
 
-        const harmPercs = [p.h3, p.h5, p.h7, p.h9, p.h11];
+        const harmPercs = [p.h2, p.h3, p.h4, p.h5, p.h6, p.h7, p.h8, p.h9, p.h10, p.h11];
         let sumIhSq = 0;
         const iHarmAmps = [i1];
         for (let h = 0; h < harmPercs.length; h++) {
@@ -1963,7 +2418,7 @@
 
         const uHarmAmpsK = [u1Rms];
         let sumUhSq = 0;
-        for (let h = 0; h < 5; h++) {
+        for (let h = 0; h < 10; h++) {
           let ord = orders[h + 1];
           let ih = iHarmAmps[h + 1];
           let zh = Math.sqrt(rGrid * rGrid + Math.pow(ord * omega * lGrid, 2));
@@ -2868,7 +3323,7 @@
         ctx.fillText(pct + '%', margin.left - 6, y + 3);
       }
 
-      const orders = [1, 3, 5, 7, 9, 11];
+      const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       const isRu = state.lang === 'ru';
       const is3Ph = (state.fft && state.fft.scope === '3ph');
       const isTypeU = (state.fft && state.fft.type === 'U');
@@ -2884,16 +3339,15 @@
           if (isTypeU) {
             const uAmps = state.calc.uHarmAmps[idx];
             const u1 = Math.max(1.0, uAmps[0]);
-            return [
-              100.0,
-              (uAmps[1] / u1) * 100.0,
-              (uAmps[2] / u1) * 100.0,
-              (uAmps[3] / u1) * 100.0,
-              (uAmps[4] / u1) * 100.0,
-              (uAmps[5] / u1) * 100.0
-            ];
+            return orders.map(ord => {
+              if (ord === 1) return 100.0;
+              return ((uAmps[ord - 1] || 0) / u1) * 100.0;
+            });
           } else {
-            return [100.0, p.h3, p.h5, p.h7, p.h9, p.h11];
+            return orders.map(ord => {
+              if (ord === 1) return 100.0;
+              return p['h' + ord] || 0;
+            });
           }
         });
 
@@ -2902,7 +3356,7 @@
           // LINKED 3-PHASE BALANCED MODE: SINGLE COMMON BAR PER HARMONIC
           // Phases are uniformly loaded (A = B = C), so display one unified 3-phase bar
           // =========================================================================
-          const singleBarW = Math.min(36, Math.max(18, Math.floor(colW * 0.42)));
+          const singleBarW = Math.min(26, Math.max(12, Math.floor(colW * 0.48)));
 
           for (let k = 0; k < orders.length; k++) {
             let centerX = margin.left + k * colW + colW / 2;
@@ -2971,7 +3425,7 @@
           // UNLINKED / INDEPENDENT 3-PHASE MODE: 3 SEPARATE SIDE-BY-SIDE BARS
           // Phases are independently configured, display Phase A, B, C individually
           // =========================================================================
-          const barW = Math.min(18, Math.max(4, Math.floor((colW - 14) / 3)));
+          const barW = Math.min(10, Math.max(3, Math.floor((colW - 8) / 3)));
 
           for (let k = 0; k < orders.length; k++) {
             let centerX = margin.left + k * colW + colW / 2;
@@ -3022,20 +3476,13 @@
         // --- SINGLE PHASE MODE (A, B, or C) ---
         const phaseIdx = parseInt(state.fft && state.fft.scope ? state.fft.scope : '0');
         const p = state.phases[phaseIdx];
-        const valsI = [100.0, p.h3, p.h5, p.h7, p.h9, p.h11];
+        const valsI = orders.map(ord => ord === 1 ? 100.0 : (p['h' + ord] || 0));
         
         const uAmps = state.calc.uHarmAmps[phaseIdx];
         const u1 = Math.max(1.0, uAmps[0]);
-        const valsU = [
-          100.0,
-          (uAmps[1] / u1) * 100.0,
-          (uAmps[2] / u1) * 100.0,
-          (uAmps[3] / u1) * 100.0,
-          (uAmps[4] / u1) * 100.0,
-          (uAmps[5] / u1) * 100.0
-        ];
+        const valsU = orders.map(ord => ord === 1 ? 100.0 : (((uAmps[ord - 1] || 0) / u1) * 100.0));
 
-        const barW = Math.min(26, colW * 0.35);
+        const barW = Math.min(14, Math.max(6, Math.floor(colW * 0.35)));
 
         for (let k = 0; k < orders.length; k++) {
           let centerX = margin.left + k * colW + colW / 2;
@@ -3044,7 +3491,7 @@
           let hI = (Math.min(100, pctI) / 100.0) * plotH;
           let yI = margin.top + plotH - hI;
 
-          ctx.fillStyle = (orders[k] === 3 || orders[k] === 9) ? '#FF4D4D' : '#00F0FF';
+          ctx.fillStyle = (orders[k] % 3 === 0) ? '#FF4D4D' : '#00F0FF';
           ctx.fillRect(centerX - barW - 2, yI, barW, hI);
 
           let pctU = valsU[k];
@@ -3515,11 +3962,10 @@
       document.getElementById('btn-harm-clean').textContent = dict.harmClean;
       document.getElementById('btn-harm-smps').textContent = dict.harmSmps;
       document.getElementById('btn-harm-vfd').textContent = dict.harmVfd;
-      document.getElementById('lbl-h3').textContent = dict.h3Lbl;
-      document.getElementById('lbl-h5').textContent = dict.h5Lbl;
-      document.getElementById('lbl-h7').textContent = dict.h7Lbl;
-      document.getElementById('lbl-h9').textContent = dict.h9Lbl;
-      document.getElementById('lbl-h11').textContent = dict.h11Lbl;
+      ['h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'h11'].forEach(k => {
+        const el = document.getElementById(`lbl-${k}`);
+        if (el && dict[`${k}Lbl`]) el.textContent = dict[`${k}Lbl`];
+      });
 
       // Tabs Header
       document.getElementById('tab-title-scope').textContent = dict.tabScope;
@@ -3541,6 +3987,19 @@
       if (scopeCursorEl && (state.scope.cursorX === null || state.scope.cursorX === undefined)) {
         scopeCursorEl.textContent = dict.scopeCursorDefault;
       }
+
+      // Scope Audio Bar
+      const lblAudioSrc = document.getElementById('lbl-audio-src');
+      if (lblAudioSrc) lblAudioSrc.textContent = dict.audioSrcLbl;
+      const btnAudioSrcI = document.getElementById('btn-audio-src-i');
+      if (btnAudioSrcI) btnAudioSrcI.textContent = dict.audioSrcI;
+      const btnAudioSrcU = document.getElementById('btn-audio-src-u');
+      if (btnAudioSrcU) btnAudioSrcU.textContent = dict.audioSrcU;
+      const lblAudioVol = document.getElementById('lbl-audio-vol');
+      if (lblAudioVol) lblAudioVol.textContent = dict.audioVolLbl;
+      const lblAudioRouting = document.getElementById('lbl-audio-routing');
+      if (lblAudioRouting) lblAudioRouting.textContent = dict.audioRoutingLbl;
+      updateAudioUI();
 
       // Phasor Tab
       document.getElementById('txt-rotate-phasor').textContent = state.phasor.dynamicRotate ? dict.rotateOn : dict.rotateOff;
@@ -3726,9 +4185,11 @@
       const btnSmps = document.getElementById('btn-harm-smps');
       const btnVfd = document.getElementById('btn-harm-vfd');
 
-      const isClean = p.h3 === 0 && p.h5 === 0 && p.h7 === 0 && p.h9 === 0 && p.h11 === 0;
-      const isSmps = p.h3 === 60 && p.h5 === 20 && p.h7 === 10 && p.h9 === 5 && p.h11 === 2;
-      const isVfd = p.h3 === 0 && p.h5 === 25 && p.h7 === 15 && p.h9 === 0 && p.h11 === 8;
+      const isClean = !['h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'h11'].some(k => (p[k] || 0) > 0);
+      const isSmps = (p.h3 === 60 && p.h5 === 20 && p.h7 === 10 && p.h9 === 5 && p.h11 === 2 &&
+                      !p.h2 && !p.h4 && !p.h6 && !p.h8 && !p.h10);
+      const isVfd = (p.h5 === 25 && p.h7 === 15 && p.h11 === 8 &&
+                     !p.h2 && !p.h3 && !p.h4 && !p.h6 && !p.h8 && !p.h9 && !p.h10);
 
       if (btnClean) btnClean.classList.toggle('active', isClean);
       if (btnSmps) btnSmps.classList.toggle('active', isSmps);
@@ -3790,16 +4251,17 @@
     };
 
     window.setHarmonicsPreset = function(preset, btn) {
-      const setH = (p, h3, h5, h7, h9, h11) => {
-        p.h3 = h3; p.h5 = h5; p.h7 = h7; p.h9 = h9; p.h11 = h11 || 0;
+      const setH = (p, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11) => {
+        p.h2 = h2 || 0; p.h3 = h3 || 0; p.h4 = h4 || 0; p.h5 = h5 || 0; p.h6 = h6 || 0;
+        p.h7 = h7 || 0; p.h8 = h8 || 0; p.h9 = h9 || 0; p.h10 = h10 || 0; p.h11 = h11 || 0;
       };
 
       const curLoad = (state.loads && state.loads[state.activeLoadIdx]) || { phases: state.phases, linkPhases: state.linkPhases };
       const targets = curLoad.linkPhases ? curLoad.phases : [curLoad.phases[state.activePhaseTab]];
       targets.forEach(p => {
-        if (preset === 'clean') setH(p, 0, 0, 0, 0, 0);
-        else if (preset === 'smps') setH(p, 60, 20, 10, 5, 2);
-        else if (preset === 'vfd') setH(p, 0, 25, 15, 0, 8);
+        if (preset === 'clean') setH(p, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        else if (preset === 'smps') setH(p, 0, 60, 0, 20, 0, 10, 0, 5, 0, 2);
+        else if (preset === 'vfd') setH(p, 0, 0, 0, 25, 0, 15, 0, 0, 0, 8);
       });
 
       syncPhaseSlidersFromState();
@@ -3839,9 +4301,9 @@
         enabled: true,
         linkPhases: true,
         phases: [
-          { i1: defaultI, phi1: defaultPhi, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
-          { i1: defaultI, phi1: defaultPhi, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 },
-          { i1: defaultI, phi1: defaultPhi, h3: 0.0, h5: 0.0, h7: 0.0, h9: 0.0, h11: 0.0 }
+          { i1: defaultI, phi1: defaultPhi, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 },
+          { i1: defaultI, phi1: defaultPhi, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 },
+          { i1: defaultI, phi1: defaultPhi, h2: 0.0, h3: 0.0, h4: 0.0, h5: 0.0, h6: 0.0, h7: 0.0, h8: 0.0, h9: 0.0, h10: 0.0, h11: 0.0 }
         ]
       };
       state.loads.push(newLoad);
@@ -4359,6 +4821,56 @@
       'btn-scope-reset-zoom': {
         ru: 'Сбросить масштаб осциллографа по вертикали к 100%',
         en: 'Reset oscilloscope vertical scale to 100%'
+      },
+
+      // Scope Audio Synthesizer
+      'btn-audio-toggle': {
+        ru: 'Включить или выключить генерацию реального стереозвука из графиков осциллографа',
+        en: 'Enable or disable real-time stereo sound generation from oscilloscope waveforms'
+      },
+      'btn-audio-src-i': {
+        ru: 'Синтезировать звук из мгновенных токов нагрузки i(t) со всеми высшими гармониками',
+        en: 'Synthesize audio from instantaneous load currents i(t) with all harmonics'
+      },
+      'btn-audio-src-u': {
+        ru: 'Синтезировать звук из мгновенных напряжений PCC u(t)',
+        en: 'Synthesize audio from instantaneous PCC voltages u(t)'
+      },
+      'slider-audio-vol': {
+        ru: 'Регулировка общей громкости звукового синтезатора (0% - 100%)',
+        en: 'Master volume adjustment for audio synthesizer (0% - 100%)'
+      },
+      'btn-audio-a-l': {
+        ru: 'Направить сигнал фазы A в левый аудиоканал (L)',
+        en: 'Route Phase A signal to Left audio channel (L)'
+      },
+      'btn-audio-a-r': {
+        ru: 'Направить сигнал фазы A в правый аудиоканал (R)',
+        en: 'Route Phase A signal to Right audio channel (R)'
+      },
+      'btn-audio-b-l': {
+        ru: 'Направить сигнал фазы B в левый аудиоканал (L)',
+        en: 'Route Phase B signal to Left audio channel (L)'
+      },
+      'btn-audio-b-r': {
+        ru: 'Направить сигнал фазы B в правый аудиоканал (R)',
+        en: 'Route Phase B signal to Right audio channel (R)'
+      },
+      'btn-audio-c-l': {
+        ru: 'Направить сигнал фазы C в левый аудиоканал (L)',
+        en: 'Route Phase C signal to Left audio channel (L)'
+      },
+      'btn-audio-c-r': {
+        ru: 'Направить сигнал фазы C в правый аудиоканал (R)',
+        en: 'Route Phase C signal to Right audio channel (R)'
+      },
+      'btn-audio-n-l': {
+        ru: 'Направить сигнал нейтрали N в левый аудиоканал (L)',
+        en: 'Route Neutral N signal to Left audio channel (L)'
+      },
+      'btn-audio-n-r': {
+        ru: 'Направить сигнал нейтрали N в правый аудиоканал (R)',
+        en: 'Route Neutral N signal to Right audio channel (R)'
       },
 
       // Phasor tab
@@ -4957,7 +5469,6 @@
       }
 
       const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-      const oddIdxMap = { 1: 0, 3: 1, 5: 2, 7: 3, 9: 4, 11: 5 };
       const c = state.calc;
 
       // Ensure exactly 11 rows exist with 6 cells each
@@ -4976,27 +5487,24 @@
           const suffix = isRu 
             ? '-я' 
             : (ord === 1 ? 'st' : (ord === 2 ? 'nd' : (ord === 3 ? 'rd' : 'th')));
-          const isOdd = oddIdxMap[ord] !== undefined;
-          const uIdx = isOdd ? oddIdxMap[ord] : -1;
 
-          const pctA = isOdd ? ((ord === 1) ? 100.0 : (state.phases[0]['h' + ord] || 0.0)) : 0.0;
-          const pctB = isOdd ? ((ord === 1) ? 100.0 : (state.phases[1]['h' + ord] || 0.0)) : 0.0;
-          const pctC = isOdd ? ((ord === 1) ? 100.0 : (state.phases[2]['h' + ord] || 0.0)) : 0.0;
+          const pctA = (ord === 1) ? 100.0 : (state.phases[0]['h' + ord] || 0.0);
+          const pctB = (ord === 1) ? 100.0 : (state.phases[1]['h' + ord] || 0.0);
+          const pctC = (ord === 1) ? 100.0 : (state.phases[2]['h' + ord] || 0.0);
 
           const iA = (state.phases[0].i1 * pctA) / 100.0;
           const iB = (state.phases[1].i1 * pctB) / 100.0;
           const iC = (state.phases[2].i1 * pctC) / 100.0;
 
-          const uA = isOdd ? c.uHarmAmps[0][uIdx] : 0.0;
-          const uB = isOdd ? c.uHarmAmps[1][uIdx] : 0.0;
-          const uC = isOdd ? c.uHarmAmps[2][uIdx] : 0.0;
+          const uA = c.uHarmAmps[0][k];
+          const uB = c.uHarmAmps[1][k];
+          const uC = c.uHarmAmps[2][k];
           const uAvg = (uA + uB + uC) / 3.0;
           const u1Avg = (c.uHarmAmps[0][0] + c.uHarmAmps[1][0] + c.uHarmAmps[2][0]) / 3.0;
           const uPctAvg = (uAvg / Math.max(1.0, u1Avg)) * 100.0;
 
-          const rowDimClass = isOdd ? '' : 'opacity-35';
           const tr = tbodyH.children[k];
-          tr.className = `${rowDimClass} hover:bg-[#0D2444]/60 transition-colors`;
+          tr.className = `hover:bg-[#0D2444]/60 transition-colors`;
           const cells = tr.children;
 
           cells[0].className = 'py-0.5 px-1 font-bold text-cyan-300 text-[10px] text-left';
@@ -5028,17 +5536,14 @@
           const suffix = isRu 
             ? '-я' 
             : (ord === 1 ? 'st' : (ord === 2 ? 'nd' : (ord === 3 ? 'rd' : 'th')));
-          const isOdd = oddIdxMap[ord] !== undefined;
-          const uIdx = isOdd ? oddIdxMap[ord] : -1;
 
-          const pct = isOdd ? ((ord === 1) ? 100.0 : (p['h' + ord] || 0.0)) : 0.0;
+          const pct = (ord === 1) ? 100.0 : (p['h' + ord] || 0.0);
           const iHarm = (p.i1 * pct) / 100.0;
-          const uHarm = isOdd ? uAmps[uIdx] : 0.0;
+          const uHarm = uAmps[k];
           const uPct = (uHarm / u1) * 100.0;
 
-          const rowDimClass = isOdd ? '' : 'opacity-35';
           const tr = tbodyH.children[k];
-          tr.className = `${rowDimClass} hover:bg-[#0D2444]/60 transition-colors`;
+          tr.className = `hover:bg-[#0D2444]/60 transition-colors`;
           const cells = tr.children;
 
           cells[0].className = 'py-0.5 px-1 font-bold text-cyan-300 text-[10px] text-left';
@@ -5158,11 +5663,11 @@
       document.getElementById('val-phi1').textContent = `${p.phi1.toFixed(1)}°`;
       updateNatureBadge(p.phi1);
 
-      ['h3', 'h5', 'h7', 'h9', 'h11'].forEach(k => {
+      ['h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'h11'].forEach(k => {
         const slider = document.getElementById(`slider-${k}`);
-        if (slider) slider.value = p[k];
+        if (slider) slider.value = p[k] || 0;
         const valEl = document.getElementById(`val-${k}`);
-        if (valEl) valEl.textContent = `${p[k]}%`;
+        if (valEl) valEl.textContent = `${p[k] || 0}%`;
       });
 
       syncCurrentChipsHighlight(p.i1);
@@ -5410,8 +5915,8 @@
         renderLoadsTabBar();
       });
 
-      // Harmonics Sliders
-      ['h3', 'h5', 'h7', 'h9', 'h11'].forEach(k => {
+      // Harmonics Sliders (h2 to h11)
+      ['h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'h11'].forEach(k => {
         const slider = document.getElementById(`slider-${k}`);
         if (slider) {
           slider.addEventListener('input', (e) => {
@@ -5430,6 +5935,14 @@
           });
         }
       });
+
+      // Audio volume slider
+      const sliderAudioVol = document.getElementById('slider-audio-vol');
+      if (sliderAudioVol) {
+        sliderAudioVol.addEventListener('input', (e) => {
+          setAudioVolume(e.target.value);
+        });
+      }
 
       // Oscilloscope Trace Selector Chips
       document.querySelectorAll('.p-trace-chip').forEach(chip => {
